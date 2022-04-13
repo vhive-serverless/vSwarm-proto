@@ -23,6 +23,12 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "aes":
 		log.Debug("Found AES client")
 		return new(AesClient)
+	case "auth":
+		log.Debug("Found Auth client")
+		return new(AuthClient)
+	case "fibonacci":
+		log.Debug("Found Fibonacci client")
+		return new(FibonacciClient)
 
 		// Hotel reservation ---
 	// case "Geo", "geo":
