@@ -15,8 +15,16 @@ func (c *HelloWorldClient) Init(ip, port string) {
 	c.client = pb.NewGreeterClient(c.conn)
 }
 
-func (c *HelloWorldClient) Request(req string) string {
-	r, err := c.client.SayHello(c.ctx, &pb.HelloRequest{Name: req})
+func (c *HelloWorldClient) Request(req Input) string {
+	var helloWorldMessage string
+	if req.generator == Unique {
+		helloWorldMessage = "A unique message"
+	} else if req.generator == Linear {
+		helloWorldMessage = "A linear message"
+	} else if req.generator == Random {
+		helloWorldMessage = "A random message"
+	}
+	r, err := c.client.SayHello(c.ctx, &pb.HelloRequest{Name: helloWorldMessage})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

@@ -16,11 +16,25 @@ import (
 
 // Base functionality ==============================================
 
+type GeneratorType int64
+
+const (
+	Unique GeneratorType = iota
+	Linear
+	Random
+)
+
+type Input struct {
+	generator  GeneratorType
+	lowerBound int
+	upperBound int
+}
+
 // ------ gRPC Client interface ------
 // Every client must implement this interface
 type GrpcClient interface {
 	Init(ip, port string)
-	Request(req string) string
+	Request(req Input) string
 	Close()
 }
 
