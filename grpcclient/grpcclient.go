@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	tracing "github.com/ease-lab/vSwarm/utils/tracing/go"
+
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -36,7 +38,13 @@ func (c *ClientBase) Connect(ip, port string) {
 	// Connect to the given address
 	address := fmt.Sprintf("%s:%s", c.ip, c.port)
 	log.Debug("Connect to ", address)
-	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	var conn *grpc.ClientConn
+	var err error
+	if tracing.IsTracingEnabled() {
+		conn, err = tracing.DialGRPCWithUnaryInterceptor(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	} else {
+		conn, err = grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	}
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
