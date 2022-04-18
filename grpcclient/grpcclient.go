@@ -30,6 +30,16 @@ type Input struct {
 	upperBound int
 }
 
+func (s *Input) setGenerator(gt GeneratorType) {
+	s.generator = gt
+}
+func (s *Input) setLowerBound(lb int) {
+	s.lowerBound = lb
+}
+func (s *Input) setUpperBound(ub int) {
+	s.upperBound = ub
+}
+
 // ------ gRPC Client interface ------
 // Every client must implement this interface
 type GrpcClient interface {
