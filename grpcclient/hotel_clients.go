@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"strings"
 
-	geo "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/geo"
-	profile "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/profile"
-	rate "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/rate"
-	recommendation "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/recommendation"
-	reservation "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/reservation"
-	search "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/search"
-	user "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hotel_reserv/user"
+	geo "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/geo"
+	profile "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/profile"
+	rate "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/rate"
+	recommendation "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/recommendation"
+	reservation "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/reservation"
+	search "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/search"
+	user "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/user"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -28,7 +28,7 @@ func (c *HotelGeoClient) Init(ip, port string) {
 	c.client = geo.NewGeoClient(c.conn)
 }
 
-func (c *HotelGeoClient) Request(req string) string {
+func (c *HotelGeoClient) Request(req Input) string {
 	// Create a default forward request
 	fw_req := geo.Request{
 		Lat: 37.7963,
@@ -56,7 +56,7 @@ func (c *HotelProfileClient) Init(ip, port string) {
 	c.client = profile.NewProfileClient(c.conn)
 }
 
-func (c *HotelProfileClient) Request(req string) string {
+func (c *HotelProfileClient) Request(req Input) string {
 	_, payload := getMethodPayload(req)
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -86,7 +86,7 @@ func (c *HotelRateClient) Init(ip, port string) {
 	c.client = rate.NewRateClient(c.conn)
 }
 
-func (c *HotelRateClient) Request(req string) string {
+func (c *HotelRateClient) Request(req Input) string {
 	_, payload := getMethodPayload(req)
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -116,7 +116,7 @@ func (c *HotelRecommendationClient) Init(ip, port string) {
 	c.client = recommendation.NewRecommendationClient(c.conn)
 }
 
-func (c *HotelRecommendationClient) Request(req string) string {
+func (c *HotelRecommendationClient) Request(req Input) string {
 	_, payload := getMethodPayload(req)
 	// Create a forward request
 	fw_req := recommendation.Request{
@@ -127,7 +127,7 @@ func (c *HotelRecommendationClient) Request(req string) string {
 
 	// If one of the require parameters is given as name we will use it
 	if payload == "dis" || payload == "rate" || payload == "price" {
-		fw_req.Require = req
+		fw_req.Require = req.value
 	}
 
 	fw_res, err := c.client.GetRecommendations(c.ctx, &fw_req)
@@ -151,7 +151,7 @@ func (c *HotelReservationClient) Init(ip, port string) {
 	c.client = reservation.NewReservationClient(c.conn)
 }
 
-func (c *HotelReservationClient) Request(req string) string {
+func (c *HotelReservationClient) Request(req Input) string {
 	fw_method, payload := getMethodPayload(req)
 	// Create a default forward request
 	fw_req := reservation.Request{
@@ -195,7 +195,7 @@ func (c *HotelUserClient) Init(ip, port string) {
 	c.client = user.NewUserClient(c.conn)
 }
 
-func (c *HotelUserClient) Request(req string) string {
+func (c *HotelUserClient) Request(req Input) string {
 	_, payload := getMethodPayload(req)
 	// Create a forward request
 	fw_req := user.Request{
@@ -224,7 +224,7 @@ func (c *HotelSearchClient) Init(ip, port string) {
 	c.client = search.NewSearchClient(c.conn)
 }
 
-func (c *HotelSearchClient) Request(req string) string {
+func (c *HotelSearchClient) Request(req Input) string {
 	// Create a forward request
 	fw_req := search.NearbyRequest{
 		Lat:     37.7963,

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	pb "github.com/ease-lab/serverless-perf/go-helper-lib/protos/hipstershop"
+	pb "github.com/ease-lab/vSwarm-proto/proto/hipstershop"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -82,7 +82,7 @@ func (c *ShopAdServiceClient) Init(ip, port string) {
 	c.client = pb.NewAdServiceClient(c.conn)
 }
 
-func (c *ShopAdServiceClient) Request(req string) string {
+func (c *ShopAdServiceClient) Request(req Input) string {
 
 	_, payload := getMethodPayload(req)
 	// Create a default forward request
@@ -113,7 +113,7 @@ func (c *ShopCartServiceClient) Init(ip, port string) {
 	c.client = pb.NewCartServiceClient(c.conn)
 }
 
-func (c *ShopCartServiceClient) Request(req string) string {
+func (c *ShopCartServiceClient) Request(req Input) string {
 
 	fw_method, payload := getMethodPayload(req)
 
@@ -171,7 +171,7 @@ func (c *ShopCheckoutServiceClient) Init(ip, port string) {
 	c.client = pb.NewCheckoutServiceClient(c.conn)
 }
 
-func (c *ShopCheckoutServiceClient) Request(req string) string {
+func (c *ShopCheckoutServiceClient) Request(req Input) string {
 
 	// Pass on to the real service function
 	_, payload := getMethodPayload(req)
@@ -208,7 +208,7 @@ func (c *ShopCurrencyServiceClient) Init(ip, port string) {
 	c.client = pb.NewCurrencyServiceClient(c.conn)
 }
 
-func (c *ShopCurrencyServiceClient) Request(req string) string {
+func (c *ShopCurrencyServiceClient) Request(req Input) string {
 
 	fw_method, payload := getMethodPayload(req)
 	// Pass on to the real service function
@@ -258,7 +258,7 @@ func (c *ShopEmailServiceClient) Init(ip, port string) {
 	c.client = pb.NewEmailServiceClient(c.conn)
 }
 
-func (c *ShopEmailServiceClient) Request(req string) string {
+func (c *ShopEmailServiceClient) Request(req Input) string {
 
 	// Pass on to the real service function
 	// _, payload := getMethodPayload(req)
@@ -293,7 +293,7 @@ func (c *ShopPaymentServiceClient) Init(ip, port string) {
 	c.client = pb.NewPaymentServiceClient(c.conn)
 }
 
-func (c *ShopPaymentServiceClient) Request(req string) string {
+func (c *ShopPaymentServiceClient) Request(req Input) string {
 
 	_, payload := getMethodPayload(req)
 	// Create a default forward request
@@ -329,7 +329,7 @@ func (c *ShopProductCatalogServiceClient) Init(ip, port string) {
 	c.client = pb.NewProductCatalogServiceClient(c.conn)
 }
 
-func (c *ShopProductCatalogServiceClient) Request(req string) string {
+func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 
 	fw_method, payload := getMethodPayload(req)
 
@@ -384,7 +384,7 @@ func (c *ShopRecommendationServiceClient) Init(ip, port string) {
 	c.client = pb.NewRecommendationServiceClient(c.conn)
 }
 
-func (c *ShopRecommendationServiceClient) Request(req string) string {
+func (c *ShopRecommendationServiceClient) Request(req Input) string {
 
 	_, payload := getMethodPayload(req)
 	// Create a default forward request
@@ -415,7 +415,7 @@ func (c *ShopShippingServiceClient) Init(ip, port string) {
 	c.client = pb.NewShippingServiceClient(c.conn)
 }
 
-func (c *ShopShippingServiceClient) Request(req string) string {
+func (c *ShopShippingServiceClient) Request(req Input) string {
 
 	fw_method, _ := getMethodPayload(req)
 

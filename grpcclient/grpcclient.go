@@ -27,6 +27,7 @@ type Input struct {
 	generator  GeneratorType
 	lowerBound int
 	upperBound int
+	value      string
 }
 
 func (s *Input) setGenerator(gt GeneratorType) {
@@ -37,6 +38,9 @@ func (s *Input) setLowerBound(lb int) {
 }
 func (s *Input) setUpperBound(ub int) {
 	s.upperBound = ub
+}
+func (s *Input) setValue(value string) {
+	s.value = value
 }
 
 // ------ gRPC Client interface ------
@@ -90,10 +94,10 @@ func (c *ClientBase) Close() {
 	c.conn.Close()
 }
 
-func getMethodPayload(req string) (method int, payload string) {
-	payload = req
+func getMethodPayload(req Input) (method int, payload string) {
+	payload = req.value
 	// In case we have specified the exact request we want in the string extract the info
-	str := strings.SplitN(req, "|", 2)
+	str := strings.SplitN(req.value, "|", 2)
 	if len(str) == 2 {
 		method, _ = strconv.Atoi(strings.ReplaceAll(str[0], " ", ""))
 		payload = strings.ReplaceAll(str[1], " ", "")

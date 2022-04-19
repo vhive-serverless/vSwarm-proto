@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package hipstershop;
 
-option go_package = "hipstershop/proto";
+option go_package = "github.com/ease-lab/vSwarm-proto/proto/hipstershop";
 
 // -----------------Cart service-----------------
 

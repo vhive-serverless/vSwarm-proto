@@ -4,7 +4,11 @@ go 1.18
 
 replace (
 	github.com/ease-lab/vSwarm-proto/proto/aes => ./proto/aes
+	github.com/ease-lab/vSwarm-proto/proto/auth => ./proto/auth
+	github.com/ease-lab/vSwarm-proto/proto/fibonacci => ./proto/fibonacci
 	github.com/ease-lab/vSwarm-proto/proto/helloworld => ./proto/helloworld
+	github.com/ease-lab/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
+	github.com/ease-lab/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
 	github.com/ease-lab/vSwarm/utils/tracing/go => github.com/ease-lab/vhive/utils/tracing/go v0.0.0-20220315183234-1c8a70fc7019
 )
 
