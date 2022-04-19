@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
 	tracing "github.com/ease-lab/vSwarm/utils/tracing/go"
 
@@ -65,20 +64,25 @@ func (c *ClientBase) Connect(ip, port string) {
 	var conn *grpc.ClientConn
 	var err error
 	if tracing.IsTracingEnabled() {
+		log.Debug("Tracing is enabled.")
 		conn, err = tracing.DialGRPCWithUnaryInterceptor(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	} else {
+		log.Debug("Tracing is disabled.")
 		conn, err = grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	}
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.WithFields(
+			log.Fields{
+				"event": "Could not connect",
+				"topic": "Connecting to benchmark server",
+				"key":   err,
+			}).Fatal("Failed to connect.")
 	}
 	c.conn = conn
 
 	// Create a new context.
-	// Permit 60 min timeout
 	// The context is used all the time while the connection is established
-	timeout := time.Minute * 60
-	ctx, _ := context.WithTimeout(context.Background(), timeout)
+	ctx, _ := context.WithCancel(context.Background())
 	c.ctx = ctx
 }
 
