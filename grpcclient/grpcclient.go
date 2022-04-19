@@ -30,16 +30,16 @@ type Input struct {
 	value      string
 }
 
-func (s *Input) setGenerator(gt GeneratorType) {
+func (s *Input) SetGenerator(gt GeneratorType) {
 	s.generator = gt
 }
-func (s *Input) setLowerBound(lb int) {
+func (s *Input) SetLowerBound(lb int) {
 	s.lowerBound = lb
 }
-func (s *Input) setUpperBound(ub int) {
+func (s *Input) SetUpperBound(ub int) {
 	s.upperBound = ub
 }
-func (s *Input) setValue(value string) {
+func (s *Input) SetValue(value string) {
 	s.value = value
 }
 
