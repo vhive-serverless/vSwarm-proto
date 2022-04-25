@@ -241,6 +241,8 @@ github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21/go.mod h1
 github.com/eapache/queue v1.1.0/go.mod h1:6eCeP0CKFpHLu8blIFXhExK/dRa7WDZfr6jVFPTqq+I=
 github.com/ease-lab/vSwarm/utils/tracing/go v0.0.0-20220421134056-989317c4ecb5 h1:XRUbWde6BqXTl6cvUvIiJsjrnLDoOQV7CiGkL6mWLIE=
 github.com/ease-lab/vSwarm/utils/tracing/go v0.0.0-20220421134056-989317c4ecb5/go.mod h1:qPVMrHInajL4zWgTn8e9LE7rRZwpdXsWRdfoLfynpGo=
+github.com/ease-lab/vSwarm/utils/tracing/go v0.0.0-20220421212014-f17df208fc40 h1:u4N3f5pysrmfmxQ05XsNsH3s9bNOpCUpUVYP2bLO2eY=
+github.com/ease-lab/vSwarm/utils/tracing/go v0.0.0-20220421212014-f17df208fc40/go.mod h1:qPVMrHInajL4zWgTn8e9LE7rRZwpdXsWRdfoLfynpGo=
 github.com/elazarl/goproxy v0.0.0-20180725130230-947c36da3153/go.mod h1:/Zj4wYkgs4iZTTu3o/KG3Itv/qCCa8VVMlb3i9OVuzc=
 github.com/emicklei/go-restful v0.0.0-20170410110728-ff4f55a20633/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=
 github.com/emicklei/go-restful v2.9.5+incompatible/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=
