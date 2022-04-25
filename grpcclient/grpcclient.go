@@ -28,6 +28,7 @@ type Input struct {
 	lowerBound int
 	upperBound int
 	value      string
+	count      int
 }
 
 func (s *Input) SetGenerator(gt GeneratorType) {
@@ -77,8 +78,7 @@ func (c *ClientBase) Connect(ip, port string) {
 	if err != nil {
 		log.WithFields(
 			log.Fields{
-				"event": "Could not connect",
-				"topic": "Connecting to benchmark server",
+				"event": "Connecting to benchmark server",
 				"key":   err,
 			}).Fatal("Failed to connect.")
 	}
