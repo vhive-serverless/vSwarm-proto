@@ -23,7 +23,14 @@ func (c *AesClient) Request(req Input) string {
 		plainTextMessage = "A linear message"
 	} else if req.generator == Random {
 		plainTextMessage = "A random message"
+	} else {
+		log.WithFields(
+			log.Fields{
+				"event": "Send Request to benchmark server",
+				"key":   "Invalid GeneratorType",
+			}).Fatal("Failed to determine generator.")
 	}
+
 	r, err := c.client.ShowEncryption(c.ctx, &pb.PlainTextMessage{PlaintextMessage: plainTextMessage})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
