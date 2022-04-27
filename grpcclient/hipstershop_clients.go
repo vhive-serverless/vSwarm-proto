@@ -129,7 +129,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.Empty
 		fw_res, err = c.client.AddItem(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {UserId: %s, Item: %+v} resp: %+v", payload, &defCartItem1, fw_res)
 
 	case "GetCart", "1": // Method 2: GetCart
 		fw_req := pb.GetCartRequest{
@@ -137,7 +137,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.Cart
 		fw_res, err = c.client.GetCart(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {UserId: %s} resp: %+v", payload, fw_res)
 
 	case "EmptyCart", "2": // Method 3: EmptyCart
 		fw_req := pb.EmptyCartRequest{
@@ -145,7 +145,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.Empty
 		fw_res, err = c.client.EmptyCart(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {UserId: %s} resp: %+v", payload, fw_res)
 
 	default:
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
@@ -222,7 +222,7 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 		fw_req := pb.Empty{}
 		var fw_res *pb.GetSupportedCurrenciesResponse
 		fw_res, err = c.client.GetSupportedCurrencies(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {} resp: %+v", fw_res)
 
 	case "Convert", "1": // Method 2: Convert
 		fw_req := pb.CurrencyConversionRequest{
@@ -235,7 +235,7 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 
 		var fw_res *pb.Money
 		fw_res, err = c.client.Convert(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {From: %+v, ToCode: \"EUR\"} resp: %+v", &defMoney, fw_res)
 
 	default:
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
@@ -347,7 +347,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 		fw_req := pb.Empty{}
 		var fw_res *pb.ListProductsResponse
 		fw_res, err = c.client.ListProducts(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {} resp: %+v", fw_res)
 
 	case "GetProduct", "1": // Method 2: GetProduct
 		fw_req := pb.GetProductRequest{
@@ -355,7 +355,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.Product
 		fw_res, err = c.client.GetProduct(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {Id: %s} resp: %+v", payload, fw_res)
 
 	case "SearchProducts", "2": // Method 3: SearchProducts
 		fw_req := pb.SearchProductsRequest{
@@ -363,7 +363,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.SearchProductsResponse
 		fw_res, err = c.client.SearchProducts(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {Query: %s} resp: %+v", payload, fw_res)
 
 	default:
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
@@ -437,7 +437,7 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.GetQuoteResponse
 		fw_res, err = c.client.GetQuote(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {Address: %+v, Items: %+v} resp: %+v", &defAddress, []*pb.CartItem{&defCartItem1, &defCartItem2}, fw_res)
 
 	case "ShipOrder", "1": // Method 2: ShipOrder
 		fw_req := pb.ShipOrderRequest{
@@ -446,7 +446,7 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 		}
 		var fw_res *pb.ShipOrderResponse
 		fw_res, err = c.client.ShipOrder(c.ctx, &fw_req)
-		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+		msg = fmt.Sprintf("req: {Address: %+v, Items: %+v} resp: %+v", &defAddress, []*pb.CartItem{&defCartItem1, &defCartItem2}, fw_res)
 
 	default:
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
