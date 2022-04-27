@@ -40,7 +40,7 @@ func (c *HotelGeoClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke Geo service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+	msg := fmt.Sprintf("req: {Lat: 37.7963, Lon: -122.4015,} resp: %+v", fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -70,7 +70,7 @@ func (c *HotelProfileClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke Profile service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+	msg := fmt.Sprintf("req: {HotelIds: %+v, Locale: \"\"} resp: %+v", ids, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -100,7 +100,7 @@ func (c *HotelRateClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke Rate service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+	msg := fmt.Sprintf("req: {HotelIds: %+v, InDate: \"2015-04-09\", OutDate: \"2015-04-11\"}, resp: %+v", ids, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -135,7 +135,7 @@ func (c *HotelRecommendationClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke Recommendation service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+	msg := fmt.Sprintf("req: {Require: \"dis\", Lat: 37.7834, Lon: -122.4081}, resp: %+v", fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -182,7 +182,7 @@ func (c *HotelReservationClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke Reservation service: %v", err)
 	}
 
-	msg := fmt.Sprintf("method: %s, req: %+v resp: %+v", fw_method, fw_req, *fw_res)
+	msg := fmt.Sprintf("method: %s, req: {CustomerName: %v, HotelId: []string{\"2\"}, InDate: \"2015-04-09\", OutDate: \"2015-04-11\", RoomNumber: 1,} resp: %+v", fw_method, payload, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -211,7 +211,7 @@ func (c *HotelUserClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke User service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+	msg := fmt.Sprintf("req: {Username: %s, Password: %s} resp: %+v", payload, payload, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -241,7 +241,7 @@ func (c *HotelSearchClient) Request(req Input) string {
 		log.Fatalf("Fail to invoke Search service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+	msg := fmt.Sprintf("req: {Lat: 37.7963, Lon: -122.4015, InDate: \"2015-04-09\", OutDate: \"2015-04-11\"}, resp: %+v", fw_res)
 	// log.Println(msg)
 	return msg
 }
