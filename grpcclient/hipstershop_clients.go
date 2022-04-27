@@ -84,7 +84,7 @@ func (c *ShopAdServiceClient) Init(ip, port string) {
 
 func (c *ShopAdServiceClient) Request(req Input) string {
 
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	// Create a default forward request
 	fw_req := pb.AdRequest{
 		ContextKeys: []string{payload},
@@ -115,15 +115,14 @@ func (c *ShopCartServiceClient) Init(ip, port string) {
 
 func (c *ShopCartServiceClient) Request(req Input) string {
 
-	fw_method, payload := getMethodPayload(req)
-
+	fw_method := req.method
+	payload := req.value
 	// Pass on to the real service function
 	var err error
 	var msg string
 
 	switch fw_method {
-	default:
-	case 0: // Method 1: AddItem
+	case "AddItem", "0": // Method 1: AddItem
 		fw_req := pb.AddItemRequest{
 			UserId: payload,
 			Item:   &defCartItem1,
@@ -132,7 +131,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 		fw_res, err = c.client.AddItem(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
-	case 1: // Method 2: GetCart
+	case "GetCart", "1": // Method 2: GetCart
 		fw_req := pb.GetCartRequest{
 			UserId: payload,
 		}
@@ -140,7 +139,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 		fw_res, err = c.client.GetCart(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
-	case 2: // Method 3: EmptyCart
+	case "EmptyCart", "2": // Method 3: EmptyCart
 		fw_req := pb.EmptyCartRequest{
 			UserId: payload,
 		}
@@ -148,12 +147,15 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 		fw_res, err = c.client.EmptyCart(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
+	default:
+		log.Fatalf("Failed to understand requested method: %s", fw_method)
+
 	}
 	if err != nil {
 		log.Fatalf("Fail to invoke Cart service: %v", err)
 	}
 
-	msg = fmt.Sprintf("method: %d, %s", fw_method, msg)
+	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
 }
@@ -174,7 +176,7 @@ func (c *ShopCheckoutServiceClient) Init(ip, port string) {
 func (c *ShopCheckoutServiceClient) Request(req Input) string {
 
 	// Pass on to the real service function
-	_, payload := getMethodPayload(req)
+	payload := req.value
 
 	// Create a forward request
 	fw_req := pb.PlaceOrderRequest{
@@ -210,20 +212,19 @@ func (c *ShopCurrencyServiceClient) Init(ip, port string) {
 
 func (c *ShopCurrencyServiceClient) Request(req Input) string {
 
-	fw_method, payload := getMethodPayload(req)
+	fw_method, payload := req.method, req.value
 	// Pass on to the real service function
 	var err error
 	var msg string
 
 	switch fw_method {
-	default:
-	case 0: // Method 1: GetSupportedCurrencies
+	case "GetSupportedCurrencies", "0": // Method 1: GetSupportedCurrencies
 		fw_req := pb.Empty{}
 		var fw_res *pb.GetSupportedCurrenciesResponse
 		fw_res, err = c.client.GetSupportedCurrencies(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
-	case 1: // Method 2: Convert
+	case "Convert", "1": // Method 2: Convert
 		fw_req := pb.CurrencyConversionRequest{
 			From:   &defMoney,
 			ToCode: "EUR",
@@ -235,12 +236,15 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 		var fw_res *pb.Money
 		fw_res, err = c.client.Convert(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
+
+	default:
+		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
 		log.Fatalf("Fail to invoke Currency service: %v", err)
 	}
 
-	msg = fmt.Sprintf("method: %d, %s", fw_method, msg)
+	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
 }
@@ -295,7 +299,7 @@ func (c *ShopPaymentServiceClient) Init(ip, port string) {
 
 func (c *ShopPaymentServiceClient) Request(req Input) string {
 
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	// Create a default forward request
 	fw_req := pb.ChargeRequest{
 		Amount:     &defMoney,
@@ -362,7 +366,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
 	default:
-		log.Fatalf("Failed to understand invoked function %s", fw_method)
+		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
 		log.Fatalf("Fail to invoke ProductCatalog service: %v", err)
@@ -388,7 +392,7 @@ func (c *ShopRecommendationServiceClient) Init(ip, port string) {
 
 func (c *ShopRecommendationServiceClient) Request(req Input) string {
 
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	// Create a default forward request
 	fw_req := pb.ListRecommendationsRequest{
 		UserId:     payload,
@@ -419,15 +423,14 @@ func (c *ShopShippingServiceClient) Init(ip, port string) {
 
 func (c *ShopShippingServiceClient) Request(req Input) string {
 
-	fw_method, _ := getMethodPayload(req)
+	fw_method := req.method
 
 	// Pass on to the real service function
 	var err error
 	var msg string
 
 	switch fw_method {
-	default:
-	case 0: // Method 1: GetQuote
+	case "GetQuote", "0": // Method 1: GetQuote
 		fw_req := pb.GetQuoteRequest{
 			Address: &defAddress,
 			Items:   []*pb.CartItem{&defCartItem1, &defCartItem2},
@@ -436,7 +439,7 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 		fw_res, err = c.client.GetQuote(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
-	case 1: // Method 2: ShipOrder
+	case "ShipOrder", "1": // Method 2: ShipOrder
 		fw_req := pb.ShipOrderRequest{
 			Address: &defAddress,
 			Items:   []*pb.CartItem{&defCartItem1, &defCartItem2},
@@ -445,12 +448,14 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 		fw_res, err = c.client.ShipOrder(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
+	default:
+		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
 		log.Fatalf("Fail to invoke Shipping service: %v", err)
 	}
 
-	msg = fmt.Sprintf("method: %d, %s", fw_method, msg)
+	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
 }

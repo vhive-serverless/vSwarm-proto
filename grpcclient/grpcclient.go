@@ -3,8 +3,6 @@ package grpcclient
 import (
 	"context"
 	"fmt"
-	"strconv"
-	"strings"
 
 	tracing "github.com/ease-lab/vSwarm/utils/tracing/go"
 
@@ -96,15 +94,4 @@ func (c *ClientBase) Connect(ip, port string) {
 
 func (c *ClientBase) Close() {
 	c.conn.Close()
-}
-
-func getMethodPayload(req Input) (method int, payload string) {
-	payload = req.value
-	// In case we have specified the exact request we want in the string extract the info
-	str := strings.SplitN(req.value, "|", 2)
-	if len(str) == 2 {
-		method, _ = strconv.Atoi(strings.ReplaceAll(str[0], " ", ""))
-		payload = strings.ReplaceAll(str[1], " ", "")
-	}
-	return
 }
