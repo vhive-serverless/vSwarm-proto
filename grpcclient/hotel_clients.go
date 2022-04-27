@@ -57,7 +57,7 @@ func (c *HotelProfileClient) Init(ip, port string) {
 }
 
 func (c *HotelProfileClient) Request(req Input) string {
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
 	fw_req := profile.Request{
@@ -87,7 +87,7 @@ func (c *HotelRateClient) Init(ip, port string) {
 }
 
 func (c *HotelRateClient) Request(req Input) string {
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
 	fw_req := rate.Request{
@@ -117,7 +117,7 @@ func (c *HotelRecommendationClient) Init(ip, port string) {
 }
 
 func (c *HotelRecommendationClient) Request(req Input) string {
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	// Create a forward request
 	fw_req := recommendation.Request{
 		Require: "dis",
@@ -152,7 +152,7 @@ func (c *HotelReservationClient) Init(ip, port string) {
 }
 
 func (c *HotelReservationClient) Request(req Input) string {
-	fw_method, payload := getMethodPayload(req)
+	fw_method, payload := req.method, req.value
 	// Create a default forward request
 	fw_req := reservation.Request{
 		CustomerName: payload,
@@ -167,19 +167,22 @@ func (c *HotelReservationClient) Request(req Input) string {
 	var err error
 
 	switch fw_method {
-	default:
-	case 0:
+	case "CheckAvailability", "0":
 		fw_req.HotelId[0] = "2"
 		fw_res, err = c.client.CheckAvailability(c.ctx, &fw_req)
-	case 1:
+
+	case "MakeReservation", "1":
 		fw_req.HotelId[0] = "3"
 		fw_res, err = c.client.MakeReservation(c.ctx, &fw_req)
+
+	default:
+		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
 		log.Fatalf("Fail to invoke Reservation service: %v", err)
 	}
 
-	msg := fmt.Sprintf("method: %d, req: %+v resp: %+v", fw_method, fw_req, *fw_res)
+	msg := fmt.Sprintf("method: %s, req: %+v resp: %+v", fw_method, fw_req, *fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -196,7 +199,7 @@ func (c *HotelUserClient) Init(ip, port string) {
 }
 
 func (c *HotelUserClient) Request(req Input) string {
-	_, payload := getMethodPayload(req)
+	payload := req.value
 	// Create a forward request
 	fw_req := user.Request{
 		Username: payload,
