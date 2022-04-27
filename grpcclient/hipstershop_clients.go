@@ -331,21 +331,21 @@ func (c *ShopProductCatalogServiceClient) Init(ip, port string) {
 
 func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 
-	fw_method, payload := getMethodPayload(req)
+	fw_method := req.method
+	payload := req.value
 
 	// Pass on to the real service function
 	var err error
 	var msg string
 
 	switch fw_method {
-	default:
-	case 0: // Method 1: ListProducts
+	case "ListProducts", "0": // Method 1: ListProducts
 		fw_req := pb.Empty{}
 		var fw_res *pb.ListProductsResponse
 		fw_res, err = c.client.ListProducts(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
-	case 1: // Method 2: GetProduct
+	case "GetProduct", "1": // Method 2: GetProduct
 		fw_req := pb.GetProductRequest{
 			Id: payload,
 		}
@@ -353,7 +353,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 		fw_res, err = c.client.GetProduct(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
-	case 2: // Method 3: SearchProducts
+	case "SearchProducts", "2": // Method 3: SearchProducts
 		fw_req := pb.SearchProductsRequest{
 			Query: payload,
 		}
@@ -361,12 +361,14 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 		fw_res, err = c.client.SearchProducts(c.ctx, &fw_req)
 		msg = fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 
+	default:
+		log.Fatalf("Failed to understand invoked function %s", fw_method)
 	}
 	if err != nil {
 		log.Fatalf("Fail to invoke ProductCatalog service: %v", err)
 	}
 
-	msg = fmt.Sprintf("method: %d, %s", fw_method, msg)
+	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
 }

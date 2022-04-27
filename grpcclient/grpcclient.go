@@ -29,6 +29,7 @@ type Input struct {
 	upperBound int
 	value      string
 	count      int
+	method     string
 }
 
 func (s *Input) SetGenerator(gt GeneratorType) {
@@ -42,6 +43,9 @@ func (s *Input) SetUpperBound(ub int) {
 }
 func (s *Input) SetValue(value string) {
 	s.value = value
+}
+func (s *Input) SetMethod(method string) {
+	s.method = method
 }
 
 // ------ gRPC Client interface ------
