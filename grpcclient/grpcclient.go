@@ -3,6 +3,7 @@ package grpcclient
 import (
 	"context"
 	"fmt"
+	"time"
 
 	tracing "github.com/ease-lab/vSwarm/utils/tracing/go"
 
@@ -77,8 +78,8 @@ func (s *GeneratorBase) Decrement() int {
 // ------ gRPC Client interface ------
 // Every client must implement this interface
 type GrpcClient interface {
-	Init(ip, port string)
-	Request(req Input) string
+	Init(ctx context.Context, ip, port string)
+	Request(ctx context.Context, req Input) string
 	Close()
 	GetGenerator() Generator
 }
@@ -87,11 +88,10 @@ type GrpcClient interface {
 type ClientBase struct {
 	ip   string
 	port string
-	ctx  context.Context
 	conn *grpc.ClientConn
 }
 
-func (c *ClientBase) Connect(ip, port string) {
+func (c *ClientBase) Connect(ctx context.Context, ip, port string) {
 	c.ip = ip
 	c.port = port
 	// Connect to the given address
@@ -117,8 +117,12 @@ func (c *ClientBase) Connect(ip, port string) {
 
 	// Create a new context.
 	// The context is used all the time while the connection is established
-	ctx, _ := context.WithCancel(context.Background())
-	c.ctx = ctx
+	timeout := time.Minute * 60
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	select {
+	case <-ctx.Done():
+		log.Fatalf("Context cancelled: %+v", cancel)
+	}
 }
 
 func (c *ClientBase) Close() {

@@ -1,6 +1,8 @@
 package grpcclient
 
 import (
+	"context"
+
 	pb "github.com/ease-lab/vSwarm-proto/proto/helloworld"
 	log "github.com/sirupsen/logrus"
 )
@@ -56,13 +58,13 @@ type HelloWorldClient struct {
 	client pb.GreeterClient
 }
 
-func (c *HelloWorldClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HelloWorldClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewGreeterClient(c.conn)
 }
 
-func (c *HelloWorldClient) Request(req Input) string {
-	r, err := c.client.SayHello(c.ctx, &pb.HelloRequest{Name: req.Value})
+func (c *HelloWorldClient) Request(ctx context.Context, req Input) string {
+	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: req.Value})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

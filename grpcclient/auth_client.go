@@ -1,6 +1,8 @@
 package grpcclient
 
 import (
+	"context"
+
 	pb "github.com/ease-lab/vSwarm-proto/proto/auth"
 	log "github.com/sirupsen/logrus"
 )
@@ -33,14 +35,14 @@ type AuthClient struct {
 	client pb.GreeterClient
 }
 
-func (c *AuthClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *AuthClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewGreeterClient(c.conn)
 }
 
-func (c *AuthClient) Request(req Input) string {
+func (c *AuthClient) Request(ctx context.Context, req Input) string {
 	var authMessage = req.Value
-	r, err := c.client.SayHello(c.ctx, &pb.HelloRequest{Name: authMessage})
+	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: authMessage})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

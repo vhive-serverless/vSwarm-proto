@@ -1,6 +1,8 @@
 package grpcclient
 
 import (
+	"context"
+
 	pb "github.com/ease-lab/vSwarm-proto/proto/aes"
 	log "github.com/sirupsen/logrus"
 )
@@ -39,13 +41,14 @@ type AesClient struct {
 	client pb.AesClient
 }
 
-func (c *AesClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *AesClient) Init(ctx context.Context, ip, port string) {
+	ctx = context.Background()
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewAesClient(c.conn)
 }
 
-func (c *AesClient) Request(req Input) string {
-	r, err := c.client.ShowEncryption(c.ctx, &pb.PlainTextMessage{PlaintextMessage: req.Value})
+func (c *AesClient) Request(ctx context.Context, req Input) string {
+	r, err := c.client.ShowEncryption(ctx, &pb.PlainTextMessage{PlaintextMessage: req.Value})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
