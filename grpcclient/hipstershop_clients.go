@@ -58,14 +58,6 @@ var (
 		ShippingAddress:    &defAddress,
 		Items:              []*pb.OrderItem{&item1, &item2, &item3},
 	}
-	product1 = pb.Product{
-		Id:          "OLJCESPC7Z",
-		Name:        "Coffee",
-		Description: "Beans with a smooth and flowery chocolate finish.",
-		Picture:     "/static/img/products/coffee-beans.jpg",
-		PriceUsd:    &pb.Money{CurrencyCode: "USD", Units: 18, Nanos: 990000000},
-		Categories:  []string{"coffee"},
-	}
 	defProductId1 = "OLJCESPC7Z"
 	defProductId2 = "LS4PSXUNUM"
 )
