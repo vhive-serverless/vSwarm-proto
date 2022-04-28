@@ -1,6 +1,7 @@
 package grpcclient
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 
@@ -70,12 +71,12 @@ type ShopAdServiceClient struct {
 	client pb.AdServiceClient
 }
 
-func (c *ShopAdServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopAdServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewAdServiceClient(c.conn)
 }
 
-func (c *ShopAdServiceClient) Request(req Input) string {
+func (c *ShopAdServiceClient) Request(ctx context.Context, req Input) string {
 
 	payload := req.Value
 	// Create a default forward request
@@ -83,7 +84,7 @@ func (c *ShopAdServiceClient) Request(req Input) string {
 		ContextKeys: []string{payload},
 	}
 
-	fw_res, err := c.client.GetAds(c.ctx, &fw_req)
+	fw_res, err := c.client.GetAds(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Ad service: %v", err)
 	}
@@ -113,12 +114,12 @@ type ShopCartServiceClient struct {
 	client pb.CartServiceClient
 }
 
-func (c *ShopCartServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopCartServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewCartServiceClient(c.conn)
 }
 
-func (c *ShopCartServiceClient) Request(req Input) string {
+func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) string {
 
 	fw_method := req.Method
 	payload := req.Value
@@ -133,7 +134,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 			Item:   &defCartItem1,
 		}
 		var fw_res *pb.Empty
-		fw_res, err = c.client.AddItem(c.ctx, &fw_req)
+		fw_res, err = c.client.AddItem(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {UserId: %s, Item: %+v} resp: %+v", payload, &defCartItem1, fw_res)
 
 	case "GetCart", "1": // Method 2: GetCart
@@ -141,7 +142,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 			UserId: payload,
 		}
 		var fw_res *pb.Cart
-		fw_res, err = c.client.GetCart(c.ctx, &fw_req)
+		fw_res, err = c.client.GetCart(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {UserId: %s} resp: %+v", payload, fw_res)
 
 	case "EmptyCart", "2": // Method 3: EmptyCart
@@ -149,7 +150,7 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 			UserId: payload,
 		}
 		var fw_res *pb.Empty
-		fw_res, err = c.client.EmptyCart(c.ctx, &fw_req)
+		fw_res, err = c.client.EmptyCart(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {UserId: %s} resp: %+v", payload, fw_res)
 
 	default:
@@ -185,12 +186,12 @@ type ShopCheckoutServiceClient struct {
 	client pb.CheckoutServiceClient
 }
 
-func (c *ShopCheckoutServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopCheckoutServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewCheckoutServiceClient(c.conn)
 }
 
-func (c *ShopCheckoutServiceClient) Request(req Input) string {
+func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input) string {
 
 	// Pass on to the real service function
 	payload := req.Value
@@ -204,7 +205,7 @@ func (c *ShopCheckoutServiceClient) Request(req Input) string {
 		CreditCard:   &defCreditCard,
 	}
 
-	fw_res, err := c.client.PlaceOrder(c.ctx, &fw_req)
+	fw_res, err := c.client.PlaceOrder(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Checkout service: %v", err)
 	}
@@ -234,12 +235,12 @@ type ShopCurrencyServiceClient struct {
 	client pb.CurrencyServiceClient
 }
 
-func (c *ShopCurrencyServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopCurrencyServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewCurrencyServiceClient(c.conn)
 }
 
-func (c *ShopCurrencyServiceClient) Request(req Input) string {
+func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) string {
 
 	fw_method, payload := req.Method, req.Value
 	// Pass on to the real service function
@@ -250,7 +251,7 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 	case "GetSupportedCurrencies", "0": // Method 1: GetSupportedCurrencies
 		fw_req := pb.Empty{}
 		var fw_res *pb.GetSupportedCurrenciesResponse
-		fw_res, err = c.client.GetSupportedCurrencies(c.ctx, &fw_req)
+		fw_res, err = c.client.GetSupportedCurrencies(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {} resp: %+v", fw_res)
 
 	case "Convert", "1": // Method 2: Convert
@@ -263,7 +264,7 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 		}
 
 		var fw_res *pb.Money
-		fw_res, err = c.client.Convert(c.ctx, &fw_req)
+		fw_res, err = c.client.Convert(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {From: %+v, ToCode: \"EUR\"} resp: %+v", &defMoney, fw_res)
 
 	default:
@@ -298,12 +299,12 @@ type ShopEmailServiceClient struct {
 	client pb.EmailServiceClient
 }
 
-func (c *ShopEmailServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopEmailServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewEmailServiceClient(c.conn)
 }
 
-func (c *ShopEmailServiceClient) Request(req Input) string {
+func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input) string {
 
 	// Pass on to the real service function
 	// _, payload := getMethodPayload(req)
@@ -314,7 +315,7 @@ func (c *ShopEmailServiceClient) Request(req Input) string {
 		Order: &defOrder,
 	}
 
-	fw_res, err := c.client.SendOrderConfirmation(c.ctx, &fw_req)
+	fw_res, err := c.client.SendOrderConfirmation(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Email service: %v", err)
 	}
@@ -345,12 +346,12 @@ type ShopPaymentServiceClient struct {
 	client pb.PaymentServiceClient
 }
 
-func (c *ShopPaymentServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopPaymentServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewPaymentServiceClient(c.conn)
 }
 
-func (c *ShopPaymentServiceClient) Request(req Input) string {
+func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input) string {
 
 	payload := req.Value
 	// Create a default forward request
@@ -363,7 +364,7 @@ func (c *ShopPaymentServiceClient) Request(req Input) string {
 		fw_req.Amount.Units = v
 	}
 
-	fw_res, err := c.client.Charge(c.ctx, &fw_req)
+	fw_res, err := c.client.Charge(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Payment service: %v", err)
 	}
@@ -393,12 +394,12 @@ type ShopProductCatalogServiceClient struct {
 	client pb.ProductCatalogServiceClient
 }
 
-func (c *ShopProductCatalogServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopProductCatalogServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewProductCatalogServiceClient(c.conn)
 }
 
-func (c *ShopProductCatalogServiceClient) Request(req Input) string {
+func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input) string {
 
 	fw_method := req.Method
 	payload := req.Value
@@ -411,7 +412,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 	case "ListProducts", "0": // Method 1: ListProducts
 		fw_req := pb.Empty{}
 		var fw_res *pb.ListProductsResponse
-		fw_res, err = c.client.ListProducts(c.ctx, &fw_req)
+		fw_res, err = c.client.ListProducts(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {} resp: %+v", fw_res)
 
 	case "GetProduct", "1": // Method 2: GetProduct
@@ -419,7 +420,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 			Id: payload,
 		}
 		var fw_res *pb.Product
-		fw_res, err = c.client.GetProduct(c.ctx, &fw_req)
+		fw_res, err = c.client.GetProduct(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {Id: %s} resp: %+v", payload, fw_res)
 
 	case "SearchProducts", "2": // Method 3: SearchProducts
@@ -427,7 +428,7 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 			Query: payload,
 		}
 		var fw_res *pb.SearchProductsResponse
-		fw_res, err = c.client.SearchProducts(c.ctx, &fw_req)
+		fw_res, err = c.client.SearchProducts(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {Query: %s} resp: %+v", payload, fw_res)
 
 	default:
@@ -462,12 +463,12 @@ type ShopRecommendationServiceClient struct {
 	client pb.RecommendationServiceClient
 }
 
-func (c *ShopRecommendationServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopRecommendationServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewRecommendationServiceClient(c.conn)
 }
 
-func (c *ShopRecommendationServiceClient) Request(req Input) string {
+func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input) string {
 
 	payload := req.Value
 	// Create a default forward request
@@ -476,7 +477,7 @@ func (c *ShopRecommendationServiceClient) Request(req Input) string {
 		ProductIds: []string{defProductId1, defProductId2},
 	}
 
-	fw_res, err := c.client.ListRecommendations(c.ctx, &fw_req)
+	fw_res, err := c.client.ListRecommendations(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Recommendation service: %v", err)
 	}
@@ -505,12 +506,12 @@ type ShopShippingServiceClient struct {
 	client pb.ShippingServiceClient
 }
 
-func (c *ShopShippingServiceClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *ShopShippingServiceClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewShippingServiceClient(c.conn)
 }
 
-func (c *ShopShippingServiceClient) Request(req Input) string {
+func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) string {
 
 	fw_method := req.Method
 
@@ -525,7 +526,7 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 			Items:   []*pb.CartItem{&defCartItem1, &defCartItem2},
 		}
 		var fw_res *pb.GetQuoteResponse
-		fw_res, err = c.client.GetQuote(c.ctx, &fw_req)
+		fw_res, err = c.client.GetQuote(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {Address: %+v, Items: %+v} resp: %+v", &defAddress, []*pb.CartItem{&defCartItem1, &defCartItem2}, fw_res)
 
 	case "ShipOrder", "1": // Method 2: ShipOrder
@@ -534,7 +535,7 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 			Items:   []*pb.CartItem{&defCartItem1, &defCartItem2},
 		}
 		var fw_res *pb.ShipOrderResponse
-		fw_res, err = c.client.ShipOrder(c.ctx, &fw_req)
+		fw_res, err = c.client.ShipOrder(ctx, &fw_req)
 		msg = fmt.Sprintf("req: {Address: %+v, Items: %+v} resp: %+v", &defAddress, []*pb.CartItem{&defCartItem1, &defCartItem2}, fw_res)
 
 	default:

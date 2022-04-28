@@ -1,6 +1,7 @@
 package grpcclient
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -23,19 +24,19 @@ type HotelGeoClient struct {
 	client geo.GeoClient
 }
 
-func (c *HotelGeoClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelGeoClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = geo.NewGeoClient(c.conn)
 }
 
-func (c *HotelGeoClient) Request(req Input) string {
+func (c *HotelGeoClient) Request(ctx context.Context, req Input) string {
 	// Create a default forward request
 	fw_req := geo.Request{
 		Lat: 37.7963,
 		Lon: -122.4015,
 	}
 
-	fw_res, err := c.client.Nearby(c.ctx, &fw_req)
+	fw_res, err := c.client.Nearby(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Geo service: %v", err)
 	}
@@ -63,12 +64,12 @@ type HotelProfileClient struct {
 	client profile.ProfileClient
 }
 
-func (c *HotelProfileClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelProfileClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = profile.NewProfileClient(c.conn)
 }
 
-func (c *HotelProfileClient) Request(req Input) string {
+func (c *HotelProfileClient) Request(ctx context.Context, req Input) string {
 	payload := req.Value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -77,7 +78,7 @@ func (c *HotelProfileClient) Request(req Input) string {
 		Locale:   "",
 	}
 
-	fw_res, err := c.client.GetProfiles(c.ctx, &fw_req)
+	fw_res, err := c.client.GetProfiles(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Profile service: %v", err)
 	}
@@ -106,12 +107,12 @@ type HotelRateClient struct {
 	client rate.RateClient
 }
 
-func (c *HotelRateClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelRateClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = rate.NewRateClient(c.conn)
 }
 
-func (c *HotelRateClient) Request(req Input) string {
+func (c *HotelRateClient) Request(ctx context.Context, req Input) string {
 	payload := req.Value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -120,7 +121,7 @@ func (c *HotelRateClient) Request(req Input) string {
 		InDate:   "2015-04-09",
 		OutDate:  "2015-04-11",
 	}
-	fw_res, err := c.client.GetRates(c.ctx, &fw_req)
+	fw_res, err := c.client.GetRates(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Rate service: %v", err)
 	}
@@ -148,12 +149,12 @@ type HotelRecommendationClient struct {
 	client recommendation.RecommendationClient
 }
 
-func (c *HotelRecommendationClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelRecommendationClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = recommendation.NewRecommendationClient(c.conn)
 }
 
-func (c *HotelRecommendationClient) Request(req Input) string {
+func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) string {
 	payload := req.Value
 	// Create a forward request
 	fw_req := recommendation.Request{
@@ -167,7 +168,7 @@ func (c *HotelRecommendationClient) Request(req Input) string {
 		fw_req.Require = req.Value
 	}
 
-	fw_res, err := c.client.GetRecommendations(c.ctx, &fw_req)
+	fw_res, err := c.client.GetRecommendations(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Recommendation service: %v", err)
 	}
@@ -195,12 +196,12 @@ type HotelReservationClient struct {
 	client reservation.ReservationClient
 }
 
-func (c *HotelReservationClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelReservationClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = reservation.NewReservationClient(c.conn)
 }
 
-func (c *HotelReservationClient) Request(req Input) string {
+func (c *HotelReservationClient) Request(ctx context.Context, req Input) string {
 	fw_method, payload := req.Method, req.Value
 	// Create a default forward request
 	fw_req := reservation.Request{
@@ -218,11 +219,11 @@ func (c *HotelReservationClient) Request(req Input) string {
 	switch fw_method {
 	case "CheckAvailability", "0":
 		fw_req.HotelId[0] = "2"
-		fw_res, err = c.client.CheckAvailability(c.ctx, &fw_req)
+		fw_res, err = c.client.CheckAvailability(ctx, &fw_req)
 
 	case "MakeReservation", "1":
 		fw_req.HotelId[0] = "3"
-		fw_res, err = c.client.MakeReservation(c.ctx, &fw_req)
+		fw_res, err = c.client.MakeReservation(ctx, &fw_req)
 
 	default:
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
@@ -254,12 +255,12 @@ type HotelUserClient struct {
 	client user.UserClient
 }
 
-func (c *HotelUserClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelUserClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = user.NewUserClient(c.conn)
 }
 
-func (c *HotelUserClient) Request(req Input) string {
+func (c *HotelUserClient) Request(ctx context.Context, req Input) string {
 	payload := req.Value
 	// Create a forward request
 	fw_req := user.Request{
@@ -267,7 +268,7 @@ func (c *HotelUserClient) Request(req Input) string {
 		Password: payload,
 	}
 
-	fw_res, err := c.client.CheckUser(c.ctx, &fw_req)
+	fw_res, err := c.client.CheckUser(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke User service: %v", err)
 	}
@@ -295,12 +296,12 @@ type HotelSearchClient struct {
 	client search.SearchClient
 }
 
-func (c *HotelSearchClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *HotelSearchClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = search.NewSearchClient(c.conn)
 }
 
-func (c *HotelSearchClient) Request(req Input) string {
+func (c *HotelSearchClient) Request(ctx context.Context, req Input) string {
 	// Create a forward request
 	fw_req := search.NearbyRequest{
 		Lat:     37.7963,
@@ -309,7 +310,7 @@ func (c *HotelSearchClient) Request(req Input) string {
 		OutDate: "2015-04-11",
 	}
 
-	fw_res, err := c.client.Nearby(c.ctx, &fw_req)
+	fw_res, err := c.client.Nearby(ctx, &fw_req)
 	if err != nil {
 		log.Fatalf("Fail to invoke Search service: %v", err)
 	}

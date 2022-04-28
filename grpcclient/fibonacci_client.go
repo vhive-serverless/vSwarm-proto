@@ -1,6 +1,7 @@
 package grpcclient
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 
@@ -36,14 +37,14 @@ type FibonacciClient struct {
 	client pb.GreeterClient
 }
 
-func (c *FibonacciClient) Init(ip, port string) {
-	c.Connect(ip, port)
+func (c *FibonacciClient) Init(ctx context.Context, ip, port string) {
+	c.Connect(ctx, ip, port)
 	c.client = pb.NewGreeterClient(c.conn)
 }
 
-func (c *FibonacciClient) Request(req Input) string {
+func (c *FibonacciClient) Request(ctx context.Context, req Input) string {
 	var fibonacciMessage = req.Value
-	r, err := c.client.SayHello(c.ctx, &pb.HelloRequest{Name: fibonacciMessage})
+	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: fibonacciMessage})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
