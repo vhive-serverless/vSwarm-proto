@@ -14,35 +14,35 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15proto/auth/auth.proto\x12\x04\x61uth\"-\n\x10PlainTextMessage\x12\x19\n\x11plaintext_message\x18\x01 \x01(\t\"/\n\x14ReturnEncryptionInfo\x12\x17\n\x0f\x65ncryption_info\x18\x01 \x01(\t2N\n\x04\x41uth\x12\x46\n\x0eShowEncryption\x12\x16.auth.PlainTextMessage\x1a\x1a.auth.ReturnEncryptionInfo\"\x00\x42-Z+github.com/ease-lab/vSwarm-proto/proto/authb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15proto/auth/auth.proto\x12\x04\x61uth\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2=\n\x07Greeter\x12\x32\n\x08SayHello\x12\x12.auth.HelloRequest\x1a\x10.auth.HelloReply\"\x00\x42-Z+github.com/ease-lab/vSwarm-proto/proto/authb\x06proto3')
 
 
 
-_PLAINTEXTMESSAGE = DESCRIPTOR.message_types_by_name['PlainTextMessage']
-_RETURNENCRYPTIONINFO = DESCRIPTOR.message_types_by_name['ReturnEncryptionInfo']
-PlainTextMessage = _reflection.GeneratedProtocolMessageType('PlainTextMessage', (_message.Message,), {
-  'DESCRIPTOR' : _PLAINTEXTMESSAGE,
+_HELLOREQUEST = DESCRIPTOR.message_types_by_name['HelloRequest']
+_HELLOREPLY = DESCRIPTOR.message_types_by_name['HelloReply']
+HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), {
+  'DESCRIPTOR' : _HELLOREQUEST,
   '__module__' : 'proto.auth.auth_pb2'
-  # @@protoc_insertion_point(class_scope:auth.PlainTextMessage)
+  # @@protoc_insertion_point(class_scope:auth.HelloRequest)
   })
-_sym_db.RegisterMessage(PlainTextMessage)
+_sym_db.RegisterMessage(HelloRequest)
 
-ReturnEncryptionInfo = _reflection.GeneratedProtocolMessageType('ReturnEncryptionInfo', (_message.Message,), {
-  'DESCRIPTOR' : _RETURNENCRYPTIONINFO,
+HelloReply = _reflection.GeneratedProtocolMessageType('HelloReply', (_message.Message,), {
+  'DESCRIPTOR' : _HELLOREPLY,
   '__module__' : 'proto.auth.auth_pb2'
-  # @@protoc_insertion_point(class_scope:auth.ReturnEncryptionInfo)
+  # @@protoc_insertion_point(class_scope:auth.HelloReply)
   })
-_sym_db.RegisterMessage(ReturnEncryptionInfo)
+_sym_db.RegisterMessage(HelloReply)
 
-_AUTH = DESCRIPTOR.services_by_name['Auth']
+_GREETER = DESCRIPTOR.services_by_name['Greeter']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z+github.com/ease-lab/vSwarm-proto/proto/auth'
-  _PLAINTEXTMESSAGE._serialized_start=31
-  _PLAINTEXTMESSAGE._serialized_end=76
-  _RETURNENCRYPTIONINFO._serialized_start=78
-  _RETURNENCRYPTIONINFO._serialized_end=125
-  _AUTH._serialized_start=127
-  _AUTH._serialized_end=205
+  _HELLOREQUEST._serialized_start=31
+  _HELLOREQUEST._serialized_end=59
+  _HELLOREPLY._serialized_start=61
+  _HELLOREPLY._serialized_end=90
+  _GREETER._serialized_start=92
+  _GREETER._serialized_end=153
 # @@protoc_insertion_point(module_scope)

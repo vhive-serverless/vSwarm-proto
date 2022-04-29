@@ -9,9 +9,9 @@ func FindServiceName(functionName string) string {
 	case "aes-go", "aes-python", "aes-nodejs":
 		return "aes"
 	case "auth-go", "auth-python", "auth-nodejs":
-		return "helloworld"
+		return "auth"
 	case "fibonacci-go", "fibonacci-python", "fibonacci-nodejs":
-		return "helloworld"
+		return "fibonacci"
 	default:
 		return functionName
 	}
@@ -20,6 +20,10 @@ func FindServiceName(functionName string) string {
 // Helper to find a grpc client for the given service
 func FindGrpcClient(service_name string) GrpcClient {
 	switch service_name {
+	case "helloworld":
+		log.Debug("Found Helloworld client")
+		return new(HelloWorldClient)
+
 	case "aes":
 		log.Debug("Found AES client")
 		return new(AesClient)

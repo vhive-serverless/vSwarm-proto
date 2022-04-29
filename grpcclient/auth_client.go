@@ -1,7 +1,7 @@
 package grpcclient
 
 import (
-	pb "github.com/ease-lab/vSwarm-proto/proto/helloworld"
+	pb "github.com/ease-lab/vSwarm-proto/proto/auth"
 	log "github.com/sirupsen/logrus"
 )
 

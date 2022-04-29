@@ -14,35 +14,35 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1fproto/fibonacci/fibonacci.proto\x12\tfibonacci\"-\n\x10PlainTextMessage\x12\x19\n\x11plaintext_message\x18\x01 \x01(\t\"/\n\x14ReturnEncryptionInfo\x12\x17\n\x0f\x65ncryption_info\x18\x01 \x01(\t2]\n\tFibonacci\x12P\n\x0eShowEncryption\x12\x1b.fibonacci.PlainTextMessage\x1a\x1f.fibonacci.ReturnEncryptionInfo\"\x00\x42\x32Z0github.com/ease-lab/vSwarm-proto/proto/fibonaccib\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1fproto/fibonacci/fibonacci.proto\x12\tfibonacci\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2G\n\x07Greeter\x12<\n\x08SayHello\x12\x17.fibonacci.HelloRequest\x1a\x15.fibonacci.HelloReply\"\x00\x42\x32Z0github.com/ease-lab/vSwarm-proto/proto/fibonaccib\x06proto3')
 
 
 
-_PLAINTEXTMESSAGE = DESCRIPTOR.message_types_by_name['PlainTextMessage']
-_RETURNENCRYPTIONINFO = DESCRIPTOR.message_types_by_name['ReturnEncryptionInfo']
-PlainTextMessage = _reflection.GeneratedProtocolMessageType('PlainTextMessage', (_message.Message,), {
-  'DESCRIPTOR' : _PLAINTEXTMESSAGE,
+_HELLOREQUEST = DESCRIPTOR.message_types_by_name['HelloRequest']
+_HELLOREPLY = DESCRIPTOR.message_types_by_name['HelloReply']
+HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), {
+  'DESCRIPTOR' : _HELLOREQUEST,
   '__module__' : 'proto.fibonacci.fibonacci_pb2'
-  # @@protoc_insertion_point(class_scope:fibonacci.PlainTextMessage)
+  # @@protoc_insertion_point(class_scope:fibonacci.HelloRequest)
   })
-_sym_db.RegisterMessage(PlainTextMessage)
+_sym_db.RegisterMessage(HelloRequest)
 
-ReturnEncryptionInfo = _reflection.GeneratedProtocolMessageType('ReturnEncryptionInfo', (_message.Message,), {
-  'DESCRIPTOR' : _RETURNENCRYPTIONINFO,
+HelloReply = _reflection.GeneratedProtocolMessageType('HelloReply', (_message.Message,), {
+  'DESCRIPTOR' : _HELLOREPLY,
   '__module__' : 'proto.fibonacci.fibonacci_pb2'
-  # @@protoc_insertion_point(class_scope:fibonacci.ReturnEncryptionInfo)
+  # @@protoc_insertion_point(class_scope:fibonacci.HelloReply)
   })
-_sym_db.RegisterMessage(ReturnEncryptionInfo)
+_sym_db.RegisterMessage(HelloReply)
 
-_FIBONACCI = DESCRIPTOR.services_by_name['Fibonacci']
+_GREETER = DESCRIPTOR.services_by_name['Greeter']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z0github.com/ease-lab/vSwarm-proto/proto/fibonacci'
-  _PLAINTEXTMESSAGE._serialized_start=46
-  _PLAINTEXTMESSAGE._serialized_end=91
-  _RETURNENCRYPTIONINFO._serialized_start=93
-  _RETURNENCRYPTIONINFO._serialized_end=140
-  _FIBONACCI._serialized_start=142
-  _FIBONACCI._serialized_end=235
+  _HELLOREQUEST._serialized_start=46
+  _HELLOREQUEST._serialized_end=74
+  _HELLOREPLY._serialized_start=76
+  _HELLOREPLY._serialized_end=105
+  _GREETER._serialized_start=107
+  _GREETER._serialized_end=178
 # @@protoc_insertion_point(module_scope)

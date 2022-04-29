@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	pb "github.com/ease-lab/vSwarm-proto/proto/helloworld"
+	pb "github.com/ease-lab/vSwarm-proto/proto/fibonacci"
 	log "github.com/sirupsen/logrus"
 )
 
