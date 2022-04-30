@@ -64,6 +64,7 @@ var (
 
 //
 // ------- Ad Service --------
+//
 type ShopAdServiceClient struct {
 	ClientBase
 	client pb.AdServiceClient
@@ -90,6 +91,18 @@ func (c *ShopAdServiceClient) Request(req Input) string {
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopAdServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopAdServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopAdServiceClient) GetGenerator() Generator {
+	return new(ShopAdServiceGenerator)
 }
 
 //
@@ -152,6 +165,18 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopCartServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopCartServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopCartServiceClient) GetGenerator() Generator {
+	return new(ShopCartServiceGenerator)
+}
+
 //
 // ------- Checkout Service --------
 //
@@ -187,6 +212,18 @@ func (c *ShopCheckoutServiceClient) Request(req Input) string {
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopCheckoutServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopCheckoutServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopCheckoutServiceClient) GetGenerator() Generator {
+	return new(ShopCheckoutServiceGenerator)
 }
 
 //
@@ -241,6 +278,18 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopCurrencyServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopCurrencyServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopCurrencyServiceClient) GetGenerator() Generator {
+	return new(ShopCurrencyServiceGenerator)
+}
+
 //
 // ------- Email Service --------
 //
@@ -274,6 +323,18 @@ func (c *ShopEmailServiceClient) Request(req Input) string {
 	// log.Println(msg)
 	return msg
 
+}
+
+type ShopEmailServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopEmailServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopEmailServiceClient) GetGenerator() Generator {
+	return new(ShopEmailServiceGenerator)
 }
 
 //
@@ -310,6 +371,18 @@ func (c *ShopPaymentServiceClient) Request(req Input) string {
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopPaymentServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopPaymentServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopPaymentServiceClient) GetGenerator() Generator {
+	return new(ShopPaymentServiceGenerator)
 }
 
 //
@@ -369,6 +442,18 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopProductCatalogServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopProductCatalogServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopProductCatalogServiceClient) GetGenerator() Generator {
+	return new(ShopProductCatalogServiceGenerator)
+}
+
 //
 // ------- Recommendation Service --------
 //
@@ -398,6 +483,18 @@ func (c *ShopRecommendationServiceClient) Request(req Input) string {
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopRecommendationServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopRecommendationServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopRecommendationServiceClient) GetGenerator() Generator {
+	return new(ShopRecommendationServiceGenerator)
 }
 
 //
@@ -450,4 +547,16 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopShippingServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopShippingServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopShippingServiceClient) GetGenerator() Generator {
+	return new(ShopShippingServiceGenerator)
 }
