@@ -13,6 +13,11 @@ import (
 
 // Base functionality ==============================================
 
+type Input struct {
+	Value  string
+	Method string
+}
+
 type GeneratorType int64
 
 const (
@@ -21,29 +26,52 @@ const (
 	Random
 )
 
-type Input struct {
-	generator  GeneratorType
-	lowerBound int
-	upperBound int
-	value      string
-	count      int
-	method     string
+type Generator interface {
+	SetGenerator(gt GeneratorType)
+	SetLowerBound(lb int)
+	SetUpperBound(ub int)
+	SetValue(value string)
+	SetMethod(method string)
+	Next() Input
 }
 
-func (s *Input) SetGenerator(gt GeneratorType) {
+type GeneratorBase struct {
+	generator    GeneratorType
+	lowerBound   int
+	upperBound   int
+	count        int
+	defaultInput Input
+}
+
+func (s *GeneratorBase) SetGenerator(gt GeneratorType) {
 	s.generator = gt
 }
-func (s *Input) SetLowerBound(lb int) {
+func (s *GeneratorBase) SetLowerBound(lb int) {
 	s.lowerBound = lb
 }
-func (s *Input) SetUpperBound(ub int) {
+func (s *GeneratorBase) SetUpperBound(ub int) {
 	s.upperBound = ub
 }
-func (s *Input) SetValue(value string) {
-	s.value = value
+func (s *GeneratorBase) SetValue(value string) {
+	s.defaultInput.Value = value
 }
-func (s *Input) SetMethod(method string) {
-	s.method = method
+func (s *GeneratorBase) SetMethod(method string) {
+	s.defaultInput.Method = method
+}
+
+func (s *GeneratorBase) Increment() int {
+	s.count += 1
+	if s.count > s.upperBound {
+		s.count = s.lowerBound
+	}
+	return s.count
+}
+func (s *GeneratorBase) Decrement() int {
+	s.count -= 1
+	if s.count < s.lowerBound {
+		s.count = s.upperBound
+	}
+	return s.count
 }
 
 // ------ gRPC Client interface ------
@@ -52,6 +80,7 @@ type GrpcClient interface {
 	Init(ip, port string)
 	Request(req Input) string
 	Close()
+	GetGenerator() Generator
 }
 
 // The base of the client

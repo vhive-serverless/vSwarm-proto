@@ -64,6 +64,7 @@ var (
 
 //
 // ------- Ad Service --------
+//
 type ShopAdServiceClient struct {
 	ClientBase
 	client pb.AdServiceClient
@@ -76,7 +77,7 @@ func (c *ShopAdServiceClient) Init(ip, port string) {
 
 func (c *ShopAdServiceClient) Request(req Input) string {
 
-	payload := req.value
+	payload := req.Value
 	// Create a default forward request
 	fw_req := pb.AdRequest{
 		ContextKeys: []string{payload},
@@ -90,6 +91,18 @@ func (c *ShopAdServiceClient) Request(req Input) string {
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopAdServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopAdServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopAdServiceClient) GetGenerator() Generator {
+	return new(ShopAdServiceGenerator)
 }
 
 //
@@ -107,8 +120,8 @@ func (c *ShopCartServiceClient) Init(ip, port string) {
 
 func (c *ShopCartServiceClient) Request(req Input) string {
 
-	fw_method := req.method
-	payload := req.value
+	fw_method := req.Method
+	payload := req.Value
 	// Pass on to the real service function
 	var err error
 	var msg string
@@ -152,6 +165,18 @@ func (c *ShopCartServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopCartServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopCartServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopCartServiceClient) GetGenerator() Generator {
+	return new(ShopCartServiceGenerator)
+}
+
 //
 // ------- Checkout Service --------
 //
@@ -168,7 +193,7 @@ func (c *ShopCheckoutServiceClient) Init(ip, port string) {
 func (c *ShopCheckoutServiceClient) Request(req Input) string {
 
 	// Pass on to the real service function
-	payload := req.value
+	payload := req.Value
 
 	// Create a forward request
 	fw_req := pb.PlaceOrderRequest{
@@ -189,6 +214,18 @@ func (c *ShopCheckoutServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopCheckoutServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopCheckoutServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopCheckoutServiceClient) GetGenerator() Generator {
+	return new(ShopCheckoutServiceGenerator)
+}
+
 //
 // ------- Currency Service --------
 //
@@ -204,7 +241,7 @@ func (c *ShopCurrencyServiceClient) Init(ip, port string) {
 
 func (c *ShopCurrencyServiceClient) Request(req Input) string {
 
-	fw_method, payload := req.method, req.value
+	fw_method, payload := req.Method, req.Value
 	// Pass on to the real service function
 	var err error
 	var msg string
@@ -239,6 +276,18 @@ func (c *ShopCurrencyServiceClient) Request(req Input) string {
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopCurrencyServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopCurrencyServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopCurrencyServiceClient) GetGenerator() Generator {
+	return new(ShopCurrencyServiceGenerator)
 }
 
 //
@@ -276,6 +325,18 @@ func (c *ShopEmailServiceClient) Request(req Input) string {
 
 }
 
+type ShopEmailServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopEmailServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopEmailServiceClient) GetGenerator() Generator {
+	return new(ShopEmailServiceGenerator)
+}
+
 //
 // ------- Payment Service --------
 //
@@ -291,7 +352,7 @@ func (c *ShopPaymentServiceClient) Init(ip, port string) {
 
 func (c *ShopPaymentServiceClient) Request(req Input) string {
 
-	payload := req.value
+	payload := req.Value
 	// Create a default forward request
 	fw_req := pb.ChargeRequest{
 		Amount:     &defMoney,
@@ -312,6 +373,18 @@ func (c *ShopPaymentServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopPaymentServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopPaymentServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopPaymentServiceClient) GetGenerator() Generator {
+	return new(ShopPaymentServiceGenerator)
+}
+
 //
 // ------- ProductCatalog Service --------
 //
@@ -327,8 +400,8 @@ func (c *ShopProductCatalogServiceClient) Init(ip, port string) {
 
 func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 
-	fw_method := req.method
-	payload := req.value
+	fw_method := req.Method
+	payload := req.Value
 
 	// Pass on to the real service function
 	var err error
@@ -369,6 +442,18 @@ func (c *ShopProductCatalogServiceClient) Request(req Input) string {
 	return msg
 }
 
+type ShopProductCatalogServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopProductCatalogServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopProductCatalogServiceClient) GetGenerator() Generator {
+	return new(ShopProductCatalogServiceGenerator)
+}
+
 //
 // ------- Recommendation Service --------
 //
@@ -384,7 +469,7 @@ func (c *ShopRecommendationServiceClient) Init(ip, port string) {
 
 func (c *ShopRecommendationServiceClient) Request(req Input) string {
 
-	payload := req.value
+	payload := req.Value
 	// Create a default forward request
 	fw_req := pb.ListRecommendationsRequest{
 		UserId:     payload,
@@ -398,6 +483,18 @@ func (c *ShopRecommendationServiceClient) Request(req Input) string {
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopRecommendationServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopRecommendationServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopRecommendationServiceClient) GetGenerator() Generator {
+	return new(ShopRecommendationServiceGenerator)
 }
 
 //
@@ -415,7 +512,7 @@ func (c *ShopShippingServiceClient) Init(ip, port string) {
 
 func (c *ShopShippingServiceClient) Request(req Input) string {
 
-	fw_method := req.method
+	fw_method := req.Method
 
 	// Pass on to the real service function
 	var err error
@@ -450,4 +547,16 @@ func (c *ShopShippingServiceClient) Request(req Input) string {
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
 	return msg
+}
+
+type ShopShippingServiceGenerator struct {
+	GeneratorBase
+}
+
+func (g *ShopShippingServiceGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *ShopShippingServiceClient) GetGenerator() Generator {
+	return new(ShopShippingServiceGenerator)
 }
