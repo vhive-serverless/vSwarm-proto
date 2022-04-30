@@ -15,6 +15,11 @@ import (
 
 // Base functionality ==============================================
 
+type Input struct {
+	Value  string
+	Method string
+}
+
 type GeneratorType int64
 
 const (
@@ -23,25 +28,37 @@ const (
 	Random
 )
 
-type Input struct {
-	generator  GeneratorType
-	lowerBound int
-	upperBound int
-	value      string
-	count      int
+type Generator interface {
+	SetGenerator(gt GeneratorType)
+	SetLowerBound(lb int)
+	SetUpperBound(ub int)
+	SetValue(value string)
+	SetMethod(method string)
+	Next() Input
 }
 
-func (s *Input) SetGenerator(gt GeneratorType) {
+type GeneratorBase struct {
+	generator    GeneratorType
+	lowerBound   int
+	upperBound   int
+	count        int
+	defaultInput Input
+}
+
+func (s *GeneratorBase) SetGenerator(gt GeneratorType) {
 	s.generator = gt
 }
-func (s *Input) SetLowerBound(lb int) {
+func (s *GeneratorBase) SetLowerBound(lb int) {
 	s.lowerBound = lb
 }
-func (s *Input) SetUpperBound(ub int) {
+func (s *GeneratorBase) SetUpperBound(ub int) {
 	s.upperBound = ub
 }
-func (s *Input) SetValue(value string) {
-	s.value = value
+func (s *GeneratorBase) SetValue(value string) {
+	s.defaultInput.Value = value
+}
+func (s *GeneratorBase) SetMethod(method string) {
+	s.defaultInput.Method = method
 }
 
 // ------ gRPC Client interface ------
@@ -50,6 +67,7 @@ type GrpcClient interface {
 	Init(ip, port string)
 	Request(req Input) string
 	Close()
+	GetGenerator() Generator
 }
 
 // The base of the client
@@ -95,9 +113,9 @@ func (c *ClientBase) Close() {
 }
 
 func getMethodPayload(req Input) (method int, payload string) {
-	payload = req.value
+	payload = req.Value
 	// In case we have specified the exact request we want in the string extract the info
-	str := strings.SplitN(req.value, "|", 2)
+	str := strings.SplitN(req.Value, "|", 2)
 	if len(str) == 2 {
 		method, _ = strconv.Atoi(strings.ReplaceAll(str[0], " ", ""))
 		payload = strings.ReplaceAll(str[1], " ", "")

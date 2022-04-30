@@ -45,6 +45,18 @@ func (c *HotelGeoClient) Request(req Input) string {
 	return msg
 }
 
+type HotelGeoGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelGeoGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelGeoClient) GetGenerator() Generator {
+	return new(HotelGeoGenerator)
+}
+
 // 2. Profile service
 type HotelProfileClient struct {
 	ClientBase
@@ -75,6 +87,19 @@ func (c *HotelProfileClient) Request(req Input) string {
 	return msg
 }
 
+type HotelProfileGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelProfileGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelProfileClient) GetGenerator() Generator {
+	return new(HotelProfileGenerator)
+}
+
+// ------------------------------------------------------------
 // 3. Rate service
 type HotelRateClient struct {
 	ClientBase
@@ -105,6 +130,18 @@ func (c *HotelRateClient) Request(req Input) string {
 	return msg
 }
 
+type HotelRateGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelRateGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelRateClient) GetGenerator() Generator {
+	return new(HotelRateGenerator)
+}
+
 // 4. Recommendation service
 type HotelRecommendationClient struct {
 	ClientBase
@@ -127,7 +164,7 @@ func (c *HotelRecommendationClient) Request(req Input) string {
 
 	// If one of the require parameters is given as name we will use it
 	if payload == "dis" || payload == "rate" || payload == "price" {
-		fw_req.Require = req.value
+		fw_req.Require = req.Value
 	}
 
 	fw_res, err := c.client.GetRecommendations(c.ctx, &fw_req)
@@ -138,6 +175,18 @@ func (c *HotelRecommendationClient) Request(req Input) string {
 	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type HotelRecommendationGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelRecommendationGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelRecommendationClient) GetGenerator() Generator {
+	return new(HotelRecommendationGenerator)
 }
 
 // 5. Reservation service
@@ -184,6 +233,18 @@ func (c *HotelReservationClient) Request(req Input) string {
 	return msg
 }
 
+type HotelReservationGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelReservationGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelReservationClient) GetGenerator() Generator {
+	return new(HotelReservationGenerator)
+}
+
 // 6. User service
 type HotelUserClient struct {
 	ClientBase
@@ -211,6 +272,18 @@ func (c *HotelUserClient) Request(req Input) string {
 	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type HotelUserGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelUserGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelUserClient) GetGenerator() Generator {
+	return new(HotelUserGenerator)
 }
 
 // 7. Search service
@@ -241,4 +314,16 @@ func (c *HotelSearchClient) Request(req Input) string {
 	msg := fmt.Sprintf("req: %+v resp: %+v", fw_req, fw_res)
 	// log.Println(msg)
 	return msg
+}
+
+type HotelSearchGenerator struct {
+	GeneratorBase
+}
+
+func (g *HotelSearchGenerator) Next() Input {
+	return g.defaultInput
+}
+
+func (c *HotelSearchClient) GetGenerator() Generator {
+	return new(HotelSearchGenerator)
 }

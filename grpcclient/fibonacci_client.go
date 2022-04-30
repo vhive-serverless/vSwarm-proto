@@ -1,12 +1,36 @@
 package grpcclient
 
 import (
+	"fmt"
 	"math/rand"
-	"strconv"
 
 	pb "github.com/ease-lab/vSwarm-proto/proto/helloworld"
 	log "github.com/sirupsen/logrus"
 )
+
+type FibonacciGenerator struct {
+	GeneratorBase
+}
+
+func (g *FibonacciGenerator) Next() Input {
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+
+	case Linear:
+		g.count = g.count + 1
+		pkt.Value = fmt.Sprintf("%d", g.count)
+
+	case Random:
+		fibNum := rand.Intn(1)
+		pkt.Value = fmt.Sprintf("%d", fibNum)
+	}
+	return pkt
+}
+
+func (c *FibonacciClient) GetGenerator() Generator {
+	return new(FibonacciGenerator)
+}
 
 type FibonacciClient struct {
 	ClientBase
@@ -19,27 +43,7 @@ func (c *FibonacciClient) Init(ip, port string) {
 }
 
 func (c *FibonacciClient) Request(req Input) string {
-	var fibonacciMessage string
-	if req.generator == Unique {
-		fibonacciMessage = req.value
-	} else if req.generator == Linear {
-		value64, err := strconv.ParseInt(req.value, 10, 0)
-		value := int(value64)
-		if err != nil {
-			log.Fatalf("Could not parse value for fibonacci")
-		}
-		fibonacciMessage = strconv.Itoa(value + req.count*2) // Arbitrary linear factor of 2
-	} else if req.generator == Random {
-		fibNum := req.lowerBound + rand.Intn(req.upperBound-req.lowerBound)
-		fibonacciMessage = strconv.Itoa(fibNum)
-	} else {
-		log.WithFields(
-			log.Fields{
-				"event": "Send Request to benchmark server",
-				"key":   "Invalid GeneratorType",
-			}).Fatal("Failed to determine generator.")
-	}
-
+	var fibonacciMessage = req.Value
 	r, err := c.client.SayHello(c.ctx, &pb.HelloRequest{Name: fibonacciMessage})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
