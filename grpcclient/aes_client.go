@@ -5,6 +5,35 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type AesGenerator struct {
+	GeneratorBase
+}
+
+func (g *AesGenerator) Next() Input {
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = "A unique message"
+	case Linear:
+		// g.count = g.count + 1
+		// pkt.Value = fmt.Sprintf("%d", g.count)
+		pkt.Value = "A linear message"
+	case Random:
+		pkt.Value = "A random message"
+	}
+	return pkt
+}
+
+func (c *AesClient) GetGenerator() Generator {
+	return new(AesGenerator)
+}
+
+// func (g *AesGenerator) Next() Input {
+// 	var pkt Input
+// 	fmt.Println(g.count)
+// 	return pkt
+// }
+
 type AesClient struct {
 	ClientBase
 	client pb.AesClient
@@ -16,22 +45,7 @@ func (c *AesClient) Init(ip, port string) {
 }
 
 func (c *AesClient) Request(req Input) string {
-	var plainTextMessage string
-	if req.generator == Unique {
-		plainTextMessage = "A unique message"
-	} else if req.generator == Linear {
-		plainTextMessage = "A linear message"
-	} else if req.generator == Random {
-		plainTextMessage = "A random message"
-	} else {
-		log.WithFields(
-			log.Fields{
-				"event": "Send Request to benchmark server",
-				"key":   "Invalid GeneratorType",
-			}).Fatal("Failed to determine generator.")
-	}
-
-	r, err := c.client.ShowEncryption(c.ctx, &pb.PlainTextMessage{PlaintextMessage: plainTextMessage})
+	r, err := c.client.ShowEncryption(c.ctx, &pb.PlainTextMessage{PlaintextMessage: req.Value})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
