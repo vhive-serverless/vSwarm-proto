@@ -10,7 +10,7 @@ func FindServiceName(functionName string) string {
 		return "aes"
 	case "auth-go", "auth-python", "auth-nodejs":
 		return "auth"
-	case "fibonacci-go", "fibonacci-python", "fibonacci-nodejs":
+	case "fibonacci-go", "fibonacci-python", "fibonacci-nodejs", "fibonacci-cpp":
 		return "fibonacci"
 	default:
 		return functionName
