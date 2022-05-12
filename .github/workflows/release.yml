@@ -35,10 +35,6 @@ env:
   GOOS: linux
   GO111MODULE: on
 
-on:
-  push:
-    tags:
-      - '*'
 
 jobs:
   build_release:
