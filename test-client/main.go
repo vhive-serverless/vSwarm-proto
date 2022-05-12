@@ -27,6 +27,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 
@@ -36,9 +37,11 @@ import (
 
 const (
 	defaultInput = "world"
+	version      = "LOCAL"
 )
 
 var (
+	print_version  = flag.Bool("version", false, "Version of client")
 	functionName   = flag.String("function-name", "helloworld", "Specify the name of the function being invoked.")
 	url            = flag.String("url", "0.0.0.0", "The url to connect to")
 	port           = flag.String("port", "50051", "the port to connect to")
@@ -50,6 +53,11 @@ var (
 
 func main() {
 	flag.Parse()
+
+	if *print_version {
+		fmt.Printf("client version %s\n", version)
+		os.Exit(0)
+	}
 
 	// open file and create if non-existent
 	if *logfile != "" {
@@ -112,6 +120,6 @@ func main() {
 			log.Printf("Invoked for %d times\n", i)
 		}
 	}
-	log.Printf("Finished invoking: %s", *n, reply)
+	log.Printf("Finished invoking: %s", reply)
 	log.Printf("SUCCESS: Calling functions for %d times", *n)
 }
