@@ -26,7 +26,6 @@ name: Release
 on:
   workflow_dispatch:
 
-  pull_request:
   # For all pushed tags
   push:
     tags:
@@ -42,43 +41,23 @@ jobs:
     name: build_release
     runs-on: ubuntu-20.04
     steps:
-
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-
-      ## Test and build artifacts
       - uses: actions/checkout@v3
 
-      - name: Install protoc
-        run: |
-          PROTOC_ZIP=protoc-3.14.0-linux-x86_64
-          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/$PROTOC_ZIP.zip
-          unzip -o $PROTOC_ZIP.zip -d $HOME/.local
-          chmod +x $HOME/.local/bin/protoc
-          rm -f $PROTOC_ZIP.zip
-
-      - name: Install pipenv
-        run: sudo apt install pipenv
-
-      - name: Build protoc files
-        run: |
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
-          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
-          chmod +x $(go env GOPATH)/bin/*
-          export PATH="$PATH:$(go env GOPATH)/bin"
-
-          make proto-all
+      ## Test artifacts
 
 
-      - name: Build test-client
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
-        run: |
-          make test-client
 
-      - name: version
-        run: echo "::set-output name=version::$(./client --version)"
+
+      - name: Build release
+        run: make build-release
+      # - name: Get the version
+      #   id: get_version
+      #   run: |
+      #     echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
+
+      - name: Get the version
+        id: version
+        run: echo "::set-output name=version::$(./bin/client --version)"
 
 
       ## Create the release
@@ -86,8 +65,8 @@ jobs:
         uses: actions/create-release@v1
         id: create_release
         with:
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
           release_name: ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
           # body_path: CHANGELOG.md
@@ -101,6 +80,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./client
+          asset_path: ./bin/client
           asset_name: client-linux-amd64
           asset_content_type: application

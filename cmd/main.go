@@ -37,7 +37,6 @@ import (
 
 const (
 	defaultInput = "world"
-	version      = "LOCAL"
 )
 
 var (
@@ -55,7 +54,7 @@ func main() {
 	flag.Parse()
 
 	if *print_version {
-		fmt.Printf("client version %s\n", version)
+		fmt.Println(version)
 		os.Exit(0)
 	}
 
