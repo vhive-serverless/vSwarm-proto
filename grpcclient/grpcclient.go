@@ -3,7 +3,6 @@ package grpcclient
 import (
 	"context"
 	"fmt"
-	"time"
 
 	tracing "github.com/ease-lab/vSwarm/utils/tracing/go"
 
@@ -115,14 +114,6 @@ func (c *ClientBase) Connect(ctx context.Context, ip, port string) {
 	}
 	c.conn = conn
 
-	// Create a new context.
-	// The context is used all the time while the connection is established
-	timeout := time.Minute * 60
-	ctx, cancel := context.WithTimeout(ctx, timeout)
-	go func() {
-		ctx.Done()
-		log.Fatalf("Context cancelled: %+v", cancel)
-	}()
 }
 
 func (c *ClientBase) Close() {
