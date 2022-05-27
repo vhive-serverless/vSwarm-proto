@@ -119,10 +119,10 @@ func (c *ClientBase) Connect(ctx context.Context, ip, port string) {
 	// The context is used all the time while the connection is established
 	timeout := time.Minute * 60
 	ctx, cancel := context.WithTimeout(ctx, timeout)
-	select {
-	case <-ctx.Done():
+	go func() {
+		ctx.Done()
 		log.Fatalf("Context cancelled: %+v", cancel)
-	}
+	}()
 }
 
 func (c *ClientBase) Close() {
