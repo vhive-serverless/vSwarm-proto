@@ -42,7 +42,6 @@ type AesClient struct {
 }
 
 func (c *AesClient) Init(ctx context.Context, ip, port string) {
-	ctx = context.Background()
 	c.Connect(ctx, ip, port)
 	c.client = pb.NewAesClient(c.conn)
 }
