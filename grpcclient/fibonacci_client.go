@@ -22,7 +22,7 @@ func (g *FibonacciGenerator) Next() Input {
 		pkt.Value = fmt.Sprintf("%d", g.Increment())
 
 	case Random:
-		fibNum := rand.Intn(1)
+		fibNum := rand.Intn(g.upperBound)
 		pkt.Value = fmt.Sprintf("%d", fibNum)
 	}
 	return pkt
