@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	pb "github.com/ease-lab/vSwarm-proto/proto/hipstershop"
+	pb "github.com/vhive-serverless/vSwarm-proto/proto/hipstershop"
 	log "github.com/sirupsen/logrus"
 )
 

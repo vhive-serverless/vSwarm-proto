@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	pb "github.com/ease-lab/vSwarm-proto/proto/fibonacci"
+	pb "github.com/vhive-serverless/vSwarm-proto/proto/fibonacci"
 	log "github.com/sirupsen/logrus"
 )
 

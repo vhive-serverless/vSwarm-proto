@@ -22,7 +22,7 @@
 
 syntax = "proto3";
 
-option go_package = "github.com/ease-lab/vSwarm-proto/proto/aes";
+option go_package = "github.com/vhive-serverless/vSwarm-proto/proto/aes";
 
 package aes;
 
