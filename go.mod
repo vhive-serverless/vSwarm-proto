@@ -1,14 +1,14 @@
-module github.com/ease-lab/vSwarm-proto
+module github.com/vhive-serverless/vSwarm-proto
 
 go 1.16
 
 replace (
-	github.com/ease-lab/vSwarm-proto/proto/aes => ./proto/aes
-	github.com/ease-lab/vSwarm-proto/proto/auth => ./proto/auth
-	github.com/ease-lab/vSwarm-proto/proto/fibonacci => ./proto/fibonacci
-	github.com/ease-lab/vSwarm-proto/proto/helloworld => ./proto/helloworld
-	github.com/ease-lab/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
-	github.com/ease-lab/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
+	github.com/vhive-serverless/vSwarm-proto/proto/aes => ./proto/aes
+	github.com/vhive-serverless/vSwarm-proto/proto/auth => ./proto/auth
+	github.com/vhive-serverless/vSwarm-proto/proto/fibonacci => ./proto/fibonacci
+	github.com/vhive-serverless/vSwarm-proto/proto/helloworld => ./proto/helloworld
+	github.com/vhive-serverless/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
+	github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
 )
 
 require (

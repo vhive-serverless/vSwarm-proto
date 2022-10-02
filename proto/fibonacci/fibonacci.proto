@@ -22,7 +22,7 @@
 
 syntax = "proto3";
 
-option go_package = "github.com/ease-lab/vSwarm-proto/proto/fibonacci";
+option go_package = "github.com/vhive-serverless/vSwarm-proto/proto/fibonacci";
 
 package fibonacci;
 

@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/aes/aes.proto\x12\x03\x61\x65s\"-\n\x10PlainTextMessage\x12\x19\n\x11plaintext_message\x18\x01 \x01(\t\"/\n\x14ReturnEncryptionInfo\x12\x17\n\x0f\x65ncryption_info\x18\x01 \x01(\t2K\n\x03\x41\x65s\x12\x44\n\x0eShowEncryption\x12\x15.aes.PlainTextMessage\x1a\x19.aes.ReturnEncryptionInfo\"\x00\x42,Z*github.com/ease-lab/vSwarm-proto/proto/aesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/aes/aes.proto\x12\x03\x61\x65s\"-\n\x10PlainTextMessage\x12\x19\n\x11plaintext_message\x18\x01 \x01(\t\"/\n\x14ReturnEncryptionInfo\x12\x17\n\x0f\x65ncryption_info\x18\x01 \x01(\t2K\n\x03\x41\x65s\x12\x44\n\x0eShowEncryption\x12\x15.aes.PlainTextMessage\x1a\x19.aes.ReturnEncryptionInfo\"\x00\x42\x34Z2github.com/vhive-serverless/vSwarm-proto/proto/aesb\x06proto3')
 
 
 
@@ -38,7 +38,7 @@ _AES = DESCRIPTOR.services_by_name['Aes']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'Z*github.com/ease-lab/vSwarm-proto/proto/aes'
+  DESCRIPTOR._serialized_options = b'Z2github.com/vhive-serverless/vSwarm-proto/proto/aes'
   _PLAINTEXTMESSAGE._serialized_start=28
   _PLAINTEXTMESSAGE._serialized_end=73
   _RETURNENCRYPTIONINFO._serialized_start=75

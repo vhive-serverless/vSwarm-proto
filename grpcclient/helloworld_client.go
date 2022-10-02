@@ -3,7 +3,7 @@ package grpcclient
 import (
 	"context"
 
-	pb "github.com/ease-lab/vSwarm-proto/proto/helloworld"
+	pb "github.com/vhive-serverless/vSwarm-proto/proto/helloworld"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"strings"
 
-	geo "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/geo"
-	profile "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/profile"
-	rate "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/rate"
-	recommendation "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/recommendation"
-	reservation "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/reservation"
-	search "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/search"
-	user "github.com/ease-lab/vSwarm-proto/proto/hotel_reserv/user"
+	geo "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/geo"
+	profile "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/profile"
+	rate "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/rate"
+	recommendation "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/recommendation"
+	reservation "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/reservation"
+	search "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/search"
+	user "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/user"
 
 	log "github.com/sirupsen/logrus"
 )

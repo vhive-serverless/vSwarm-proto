@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n!proto/helloworld/helloworld.proto\x12\nhelloworld\"3\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\rvHiveMetadata\x18\x0f \x01(\x0c\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2I\n\x07Greeter\x12>\n\x08SayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x42\x33Z1github.com/ease-lab/vSwarm-proto/proto/helloworldb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n!proto/helloworld/helloworld.proto\x12\nhelloworld\"3\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\rvHiveMetadata\x18\x0f \x01(\x0c\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2I\n\x07Greeter\x12>\n\x08SayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x42;Z9github.com/vhive-serverless/vSwarm-proto/proto/helloworldb\x06proto3')
 
 
 
@@ -38,7 +38,7 @@ _GREETER = DESCRIPTOR.services_by_name['Greeter']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  DESCRIPTOR._serialized_options = b'Z1github.com/ease-lab/vSwarm-proto/proto/helloworld'
+  DESCRIPTOR._serialized_options = b'Z9github.com/vhive-serverless/vSwarm-proto/proto/helloworld'
   _HELLOREQUEST._serialized_start=49
   _HELLOREQUEST._serialized_end=100
   _HELLOREPLY._serialized_start=102

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/ease-lab/vSwarm-proto/proto/helloworld";
+option go_package = "github.com/vhive-serverless/vSwarm-proto/proto/helloworld";
 
 package helloworld;
 
