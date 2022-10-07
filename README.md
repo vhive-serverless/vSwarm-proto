@@ -1,6 +1,6 @@
 # vSwarm-proto
 
-vSwarm-proto is a utility for [vSwarm](https://github.com/ease-lab/vSwarm/) containing all the proto files and client applications necessary to run benchmarks using [relay](https://github.com/ease-lab/vSwarm/tree/main/tools/relay). As such its part of the [vHive Ecosystem](https://vhive-serverless.github.io/).
+vSwarm-proto is a utility for [vSwarm](https://github.com/vhive-serverless/vSwarm/) containing all the proto files and client applications necessary to run benchmarks using [relay](https://github.com/vhive-serverless/vSwarm/tree/main/tools/relay). As such its part of the [vHive Ecosystem](https://vhive-serverless.github.io/).
 
 ## License and copyright
 
