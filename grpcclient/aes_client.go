@@ -2,10 +2,13 @@ package grpcclient
 
 import (
 	"context"
+	"math/rand"
 
-	pb "github.com/vhive-serverless/vSwarm-proto/proto/aes"
 	log "github.com/sirupsen/logrus"
+	pb "github.com/vhive-serverless/vSwarm-proto/proto/aes"
 )
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 type AesGenerator struct {
 	GeneratorBase
@@ -21,20 +24,25 @@ func (g *AesGenerator) Next() Input {
 		// pkt.Value = fmt.Sprintf("%d", g.count)
 		pkt.Value = "A linear message"
 	case Random:
-		pkt.Value = "A random message"
+		pkt.Value = g.randSeq()
 	}
 	return pkt
+}
+
+func (g *AesGenerator) randSeq() string {
+	// Make random length
+	l := g.lowerBound + rand.Intn(g.upperBound-g.lowerBound)
+	b := make([]rune, l)
+	// make the string
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
 
 func (c *AesClient) GetGenerator() Generator {
 	return new(AesGenerator)
 }
-
-// func (g *AesGenerator) Next() Input {
-// 	var pkt Input
-// 	fmt.Println(g.count)
-// 	return pkt
-// }
 
 type AesClient struct {
 	ClientBase
@@ -42,6 +50,7 @@ type AesClient struct {
 }
 
 func (c *AesClient) Init(ctx context.Context, ip, port string) {
+	log.Printf("Connect to: %s:%s\n", ip, port)
 	c.Connect(ctx, ip, port)
 	c.client = pb.NewAesClient(c.conn)
 }

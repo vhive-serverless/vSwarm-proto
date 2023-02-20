@@ -2,10 +2,13 @@ package grpcclient
 
 import (
 	"context"
+	"math/rand"
 
-	pb "github.com/vhive-serverless/vSwarm-proto/proto/auth"
 	log "github.com/sirupsen/logrus"
+	pb "github.com/vhive-serverless/vSwarm-proto/proto/auth"
 )
+
+var inputs = []string{"allow", "deny", "unauthorized", "bla bla"}
 
 type AuthGenerator struct {
 	GeneratorBase
@@ -21,7 +24,7 @@ func (g *AuthGenerator) Next() Input {
 		// pkt.Value = fmt.Sprintf("%d", g.count)
 		pkt.Value = "A linear message"
 	case Random:
-		pkt.Value = "A random message"
+		pkt.Value = inputs[rand.Intn(len(inputs))]
 	}
 	return pkt
 }

@@ -3,6 +3,8 @@ package grpcclient
 import (
 	"context"
 	"fmt"
+	"math/rand"
+	"strconv"
 	"strings"
 
 	geo "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/geo"
@@ -31,9 +33,14 @@ func (c *HotelGeoClient) Init(ctx context.Context, ip, port string) {
 
 func (c *HotelGeoClient) Request(ctx context.Context, req Input) string {
 	// Create a default forward request
+	coordinates := strings.Split(req.Value, ",")
+
+	lat, _ := strconv.ParseFloat(coordinates[0], 32)
+	lon, _ := strconv.ParseFloat(coordinates[1], 32)
+
 	fw_req := geo.Request{
-		Lat: 37.7963,
-		Lon: -122.4015,
+		Lon: float32(lon),
+		Lat: float32(lat),
 	}
 
 	fw_res, err := c.client.Nearby(ctx, &fw_req)
@@ -41,7 +48,7 @@ func (c *HotelGeoClient) Request(ctx context.Context, req Input) string {
 		log.Fatalf("Fail to invoke Geo service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: {Lat: 37.7963, Lon: -122.4015,} resp: %+v", fw_res)
+	msg := fmt.Sprintf("req: { Lat:%f Lon:%f} resp: %+v", fw_req.Lon, fw_req.Lat, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -50,8 +57,24 @@ type HotelGeoGenerator struct {
 	GeneratorBase
 }
 
+var hotelCoordinates = []string{
+	"37.7867,-122.4112", "37.795,-122.5", "37.9,-122.3", "37.783,-122.41",
+	"37.7,-129.4015", "37.7854,-122.4005", "37.7854,-122.4071",
+	"37.7936,-122.3930",
+}
+
 func (g *HotelGeoGenerator) Next() Input {
-	return g.defaultInput
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = hotelCoordinates[0]
+	case Linear:
+		g.count += 1
+		pkt.Value = hotelCoordinates[g.count%len(hotelCoordinates)]
+	case Random:
+		pkt.Value = hotelCoordinates[rand.Intn(len(hotelCoordinates))]
+	}
+	return pkt
 }
 
 func (c *HotelGeoClient) GetGenerator() Generator {
@@ -92,8 +115,28 @@ type HotelProfileGenerator struct {
 	GeneratorBase
 }
 
+func randIds(n int) string {
+	s := "1"
+	for i := 0; i < n; i++ {
+		s += fmt.Sprintf(",%d", rand.Intn(50))
+	}
+	return s
+}
+
 func (g *HotelProfileGenerator) Next() Input {
-	return g.defaultInput
+	// For profile we generate hotel ids between 1 and 80
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = "1,2"
+	case Linear:
+		g.count += 1
+		pkt.Value = fmt.Sprintf("%d", g.count%80)
+	case Random:
+		n := rand.Intn(5)
+		pkt.Value = randIds(n)
+	}
+	return pkt
 }
 
 func (c *HotelProfileClient) GetGenerator() Generator {
@@ -136,7 +179,19 @@ type HotelRateGenerator struct {
 }
 
 func (g *HotelRateGenerator) Next() Input {
-	return g.defaultInput
+	// For profile we generate hotel ids between 1 and 80
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = "1,2"
+	case Linear:
+		g.count += 1
+		pkt.Value = fmt.Sprintf("%d", g.count%80)
+	case Random:
+		n := rand.Intn(5)
+		pkt.Value = randIds(n)
+	}
+	return pkt
 }
 
 func (c *HotelRateClient) GetGenerator() Generator {
@@ -155,12 +210,19 @@ func (c *HotelRecommendationClient) Init(ctx context.Context, ip, port string) {
 }
 
 func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) string {
+
+	// Create a default forward request
+	coordinates := strings.Split(req.Value, ",")
+
+	lat, _ := strconv.ParseFloat(coordinates[0], 32)
+	lon, _ := strconv.ParseFloat(coordinates[1], 32)
+
 	payload := req.Value
 	// Create a forward request
 	fw_req := recommendation.Request{
 		Require: "dis",
-		Lat:     37.7834,
-		Lon:     -122.4081,
+		Lon:     float64(lon),
+		Lat:     float64(lat),
 	}
 
 	// If one of the require parameters is given as name we will use it
@@ -173,7 +235,7 @@ func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) stri
 		log.Fatalf("Fail to invoke Recommendation service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: {Require: \"dis\", Lat: 37.7834, Lon: -122.4081}, resp: %+v", fw_res)
+	msg := fmt.Sprintf("req: {Require: \"dis\", Lat:%f Lon:%f}, resp: %+v", fw_req.Lon, fw_req.Lat, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -183,7 +245,17 @@ type HotelRecommendationGenerator struct {
 }
 
 func (g *HotelRecommendationGenerator) Next() Input {
-	return g.defaultInput
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = hotelCoordinates[0]
+	case Linear:
+		g.count += 1
+		pkt.Value = hotelCoordinates[g.count%len(hotelCoordinates)]
+	case Random:
+		pkt.Value = hotelCoordinates[rand.Intn(len(hotelCoordinates))]
+	}
+	return pkt
 }
 
 func (c *HotelRecommendationClient) GetGenerator() Generator {
@@ -202,11 +274,12 @@ func (c *HotelReservationClient) Init(ctx context.Context, ip, port string) {
 }
 
 func (c *HotelReservationClient) Request(ctx context.Context, req Input) string {
-	fw_method, payload := req.Method, req.Value
+	fw_method := req.Method
+	payload := strings.Split(req.Value, ",")
 	// Create a default forward request
 	fw_req := reservation.Request{
-		CustomerName: payload,
-		HotelId:      []string{"2"},
+		CustomerName: payload[0],
+		HotelId:      []string{payload[1]},
 		InDate:       "2015-04-09",
 		OutDate:      "2015-04-11",
 		RoomNumber:   1,
@@ -218,7 +291,7 @@ func (c *HotelReservationClient) Request(ctx context.Context, req Input) string 
 
 	switch fw_method {
 	case "CheckAvailability", "0":
-		fw_req.HotelId[0] = "2"
+		// fw_req.HotelId[0] = "2"
 		fw_res, err = c.client.CheckAvailability(ctx, &fw_req)
 
 	case "MakeReservation", "1":
@@ -232,7 +305,7 @@ func (c *HotelReservationClient) Request(ctx context.Context, req Input) string 
 		log.Fatalf("Fail to invoke Reservation service: %v", err)
 	}
 
-	msg := fmt.Sprintf("method: %s, req: {CustomerName: %v, HotelId: []string{\"2\"}, InDate: \"2015-04-09\", OutDate: \"2015-04-11\", RoomNumber: 1,} resp: %+v", fw_method, payload, fw_res)
+	msg := fmt.Sprintf("method: %s, req: {CustomerName: %s, HotelId: %v, InDate: \"2015-04-09\", OutDate: \"2015-04-11\", RoomNumber: 1,} resp: %+v", fw_method, fw_req.CustomerName, fw_req.HotelId, fw_res)
 	// log.Println(msg)
 	return msg
 }
@@ -241,8 +314,25 @@ type HotelReservationGenerator struct {
 	GeneratorBase
 }
 
+var hotelReservations = []string{
+	"hello,2", "user_100,3", "user_100,10", "user_430,33",
+	"adam,33", "drno,3", "user_ssd,10", "user_43,22",
+	"peter,1", "test,3", "user_d,13", "user,23",
+	"tom,4", "jack,3", "user_100,18", "hi,13",
+}
+
 func (g *HotelReservationGenerator) Next() Input {
-	return g.defaultInput
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = hotelReservations[0]
+	case Linear:
+		g.count += 1
+		pkt.Value = hotelReservations[g.count%len(hotelReservations)]
+	case Random:
+		pkt.Value = hotelReservations[rand.Intn(len(hotelReservations))]
+	}
+	return pkt
 }
 
 func (c *HotelReservationClient) GetGenerator() Generator {
@@ -261,11 +351,12 @@ func (c *HotelUserClient) Init(ctx context.Context, ip, port string) {
 }
 
 func (c *HotelUserClient) Request(ctx context.Context, req Input) string {
-	payload := req.Value
+	payload := strings.Split(req.Value, ",")
+
 	// Create a forward request
 	fw_req := user.Request{
-		Username: payload,
-		Password: payload,
+		Username: payload[0],
+		Password: payload[1],
 	}
 
 	fw_res, err := c.client.CheckUser(ctx, &fw_req)
@@ -273,7 +364,7 @@ func (c *HotelUserClient) Request(ctx context.Context, req Input) string {
 		log.Fatalf("Fail to invoke User service: %v", err)
 	}
 
-	msg := fmt.Sprintf("req: {Username: %s, Password: %s} resp: %+v", payload, payload, fw_res)
+	msg := fmt.Sprintf("req: {Username: %s, Password: %s} resp: Correct:%v", fw_req.Username, fw_req.Password, fw_res.Correct)
 	// log.Println(msg)
 	return msg
 }
@@ -282,8 +373,25 @@ type HotelUserGenerator struct {
 	GeneratorBase
 }
 
+var hotelUsers = []string{
+	"hello,hello", "user_100,pass_100", "user_100,pass_100", "user_430,pass_430",
+	"hello,hello2", "user_ads,pass_asdf", "user_23,pass_100", "user_230,pass_5",
+	"user_132,pass_132", "user_22,pass_22", "user_43,pass_43",
+	"hello,hello2", "user_ads,pass_asdf", "user_23,pass_111", "user_233,pass_5",
+}
+
 func (g *HotelUserGenerator) Next() Input {
-	return g.defaultInput
+	var pkt = g.defaultInput
+	switch g.GeneratorBase.generator {
+	case Unique:
+		pkt.Value = hotelUsers[0]
+	case Linear:
+		g.count += 1
+		pkt.Value = hotelUsers[g.count%len(hotelUsers)]
+	case Random:
+		pkt.Value = hotelUsers[rand.Intn(len(hotelUsers))]
+	}
+	return pkt
 }
 
 func (c *HotelUserClient) GetGenerator() Generator {
