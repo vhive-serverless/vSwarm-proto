@@ -12,7 +12,7 @@ replace (
 )
 
 require (
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.2
 	github.com/vhive-serverless/vSwarm/utils/tracing/go v0.0.0-20221008101717-930188b36b99
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
