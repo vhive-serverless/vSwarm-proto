@@ -10,6 +10,8 @@ func FindServiceName(functionName string) string {
 		return "aes"
 	case "auth-go", "auth-python", "auth-nodejs":
 		return "auth"
+	case "bert-python":
+		return "bert"
 	case "fibonacci-go", "fibonacci-python", "fibonacci-nodejs", "fibonacci-cpp":
 		return "fibonacci"
 	default:
@@ -30,6 +32,9 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "auth":
 		log.Debug("Found Auth client")
 		return new(AuthClient)
+	case "bert":
+		log.Debug("Found Bert client")
+		return new(BertClient)
 	case "fibonacci":
 		log.Debug("Found Fibonacci client")
 		return new(FibonacciClient)
