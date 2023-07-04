@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n5proto/image_classification/image_classification.proto\x12\x14image_classification\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"L\n\nHelloReply\x12\x13\n\x0bmin_latency\x18\x01 \x01(\x03\x12\x13\n\x0bmax_latency\x18\x02 \x01(\x03\x12\x14\n\x0cmean_latency\x18\x03 \x01(\x03\x32]\n\x07Greeter\x12R\n\x08SayHello\x12\".image_classification.HelloRequest\x1a .image_classification.HelloReply\"\x00\x42\x45ZCgithub.com/vhive-serverless/vSwarm-proto/proto/image_classificationb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n5proto/image_classification/image_classification.proto\x12\x14image_classification\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2]\n\x07Greeter\x12R\n\x08SayHello\x12\".image_classification.HelloRequest\x1a .image_classification.HelloReply\"\x00\x42\x45ZCgithub.com/vhive-serverless/vSwarm-proto/proto/image_classificationb\x06proto3')
 
 
 
@@ -42,7 +42,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _HELLOREQUEST._serialized_start=79
   _HELLOREQUEST._serialized_end=107
   _HELLOREPLY._serialized_start=109
-  _HELLOREPLY._serialized_end=185
-  _GREETER._serialized_start=187
-  _GREETER._serialized_end=280
+  _HELLOREPLY._serialized_end=138
+  _GREETER._serialized_start=140
+  _GREETER._serialized_end=233
 # @@protoc_insertion_point(module_scope)

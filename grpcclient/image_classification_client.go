@@ -45,6 +45,6 @@ func (c *ImgClassificationClient) Request(ctx context.Context, req Input) string
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	msg := fmt.Sprintf("inference time in ns: max: %d; min: %d; mean: %d", r.GetMaxLatency(),r.GetMinLatency(),r.GetMeanLatency())
-	return msg
+
+	return r.GetMessage()
 }
