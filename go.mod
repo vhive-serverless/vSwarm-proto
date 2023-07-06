@@ -9,6 +9,7 @@ replace (
 	github.com/vhive-serverless/vSwarm-proto/proto/helloworld => ./proto/helloworld
 	github.com/vhive-serverless/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
 	github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
+	github.com/vhive-serverless/vSwarm-proto/proto/image_classification => ./proto/image_classification
 )
 
 require (
