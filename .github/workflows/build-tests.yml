@@ -51,6 +51,9 @@ jobs:
           chmod +x $HOME/.local/bin/protoc
           rm -f $PROTOC_ZIP.zip
 
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - name: Install pipenv
         run: |
           python -m pip install --upgrade pipenv wheel
