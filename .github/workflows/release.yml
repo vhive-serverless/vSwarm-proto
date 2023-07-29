@@ -30,7 +30,7 @@ on:
 
 jobs:
   run-tests:
-    uses: vhive-serverless/vSwarm-proto/.github/workflows/build-tests.yml
+    uses: vhive-serverless/vSwarm-proto/.github/workflows/build-tests.yml@main
 
 
   release:
