@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2022 EASE lab
+# Copyright (c) 2023 EASE lab
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,46 +20,44 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-name: Build tests
-
+name: Release
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows to run this workflow from another workflow
-  workflow_call:
-
-env:
-  GOOS: linux
-  GO111MODULE: on
+    inputs:
+      versionName:
+        description: 'Name of version  (ie v5.5.0)'
+        required: true
 
 jobs:
-  protoc-tests:
-    name: Protoc Tests
+  run-tests:
+    uses: vhive-serverless/vSwarm-proto/.github/workflows/build-tests.yml
+
+
+  release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-      - name: Install protoc
-        run: |
-          PROTOC_ZIP=protoc-3.14.0-linux-x86_64
-          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/$PROTOC_ZIP.zip
-          unzip -o $PROTOC_ZIP.zip -d $HOME/.local
-          chmod +x $HOME/.local/bin/protoc
-          rm -f $PROTOC_ZIP.zip
 
-      - name: Install pipenv
-        run: |
-          python -m pip install --upgrade pipenv wheel
+      - uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
+        with:
+          tag: ${{ inputs.versionName }}
+          tag_exists_error: true
+          message: "Release ${{ inputs.versionName }}"
 
-      - name: Build protoc files
-        run: |
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
-          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
-          chmod +x $(go env GOPATH)/bin/*
-          export PATH="$PATH:$(go env GOPATH)/bin"
 
-          make proto-all
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ inputs.versionName }}
+          release_name: Release ${{ inputs.versionName }}
+          # body: ${{steps.build_changelog.outputs.changelog}}
+          draft: false
+          prerelease: false
