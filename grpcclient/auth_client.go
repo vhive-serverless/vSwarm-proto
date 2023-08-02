@@ -4,7 +4,6 @@ import (
 	"context"
 	"math/rand"
 
-	log "github.com/sirupsen/logrus"
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/auth"
 )
 
@@ -38,16 +37,20 @@ type AuthClient struct {
 	client pb.GreeterClient
 }
 
-func (c *AuthClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *AuthClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewGreeterClient(c.conn)
+	return nil
 }
 
-func (c *AuthClient) Request(ctx context.Context, req Input) string {
+func (c *AuthClient) Request(ctx context.Context, req Input) (string, error) {
 	var authMessage = req.Value
 	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: authMessage})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		return "", err
 	}
-	return r.GetMessage()
+	return r.GetMessage(), nil
 }

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	pb "github.com/vhive-serverless/vSwarm-proto/proto/hipstershop"
 	log "github.com/sirupsen/logrus"
+	pb "github.com/vhive-serverless/vSwarm-proto/proto/hipstershop"
 )
 
 var (
@@ -63,20 +63,22 @@ var (
 	defProductId2 = "LS4PSXUNUM"
 )
 
-//
 // ------- Ad Service --------
-//
 type ShopAdServiceClient struct {
 	ClientBase
 	client pb.AdServiceClient
 }
 
-func (c *ShopAdServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopAdServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewAdServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopAdServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopAdServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	payload := req.Value
 	// Create a default forward request
@@ -86,12 +88,12 @@ func (c *ShopAdServiceClient) Request(ctx context.Context, req Input) string {
 
 	fw_res, err := c.client.GetAds(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Ad service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopAdServiceGenerator struct {
@@ -106,20 +108,22 @@ func (c *ShopAdServiceClient) GetGenerator() Generator {
 	return new(ShopAdServiceGenerator)
 }
 
-//
 // ------- Cart Service --------
-//
 type ShopCartServiceClient struct {
 	ClientBase
 	client pb.CartServiceClient
 }
 
-func (c *ShopCartServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopCartServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewCartServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	fw_method := req.Method
 	payload := req.Value
@@ -158,12 +162,12 @@ func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) string {
 
 	}
 	if err != nil {
-		log.Fatalf("Fail to invoke Cart service: %v", err)
+		return "", err
 	}
 
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopCartServiceGenerator struct {
@@ -178,20 +182,22 @@ func (c *ShopCartServiceClient) GetGenerator() Generator {
 	return new(ShopCartServiceGenerator)
 }
 
-//
 // ------- Checkout Service --------
-//
 type ShopCheckoutServiceClient struct {
 	ClientBase
 	client pb.CheckoutServiceClient
 }
 
-func (c *ShopCheckoutServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopCheckoutServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewCheckoutServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	// Pass on to the real service function
 	payload := req.Value
@@ -207,12 +213,12 @@ func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input) stri
 
 	fw_res, err := c.client.PlaceOrder(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Checkout service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopCheckoutServiceGenerator struct {
@@ -227,20 +233,22 @@ func (c *ShopCheckoutServiceClient) GetGenerator() Generator {
 	return new(ShopCheckoutServiceGenerator)
 }
 
-//
 // ------- Currency Service --------
-//
 type ShopCurrencyServiceClient struct {
 	ClientBase
 	client pb.CurrencyServiceClient
 }
 
-func (c *ShopCurrencyServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopCurrencyServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewCurrencyServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	fw_method, payload := req.Method, req.Value
 	// Pass on to the real service function
@@ -271,12 +279,12 @@ func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) stri
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
-		log.Fatalf("Fail to invoke Currency service: %v", err)
+		return "", err
 	}
 
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopCurrencyServiceGenerator struct {
@@ -291,20 +299,22 @@ func (c *ShopCurrencyServiceClient) GetGenerator() Generator {
 	return new(ShopCurrencyServiceGenerator)
 }
 
-//
 // ------- Email Service --------
-//
 type ShopEmailServiceClient struct {
 	ClientBase
 	client pb.EmailServiceClient
 }
 
-func (c *ShopEmailServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopEmailServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewEmailServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	// Pass on to the real service function
 	// _, payload := getMethodPayload(req)
@@ -317,12 +327,11 @@ func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input) string 
 
 	fw_res, err := c.client.SendOrderConfirmation(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Email service: %v", err)
+		return "", err
 	}
-
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 
 }
 
@@ -338,20 +347,22 @@ func (c *ShopEmailServiceClient) GetGenerator() Generator {
 	return new(ShopEmailServiceGenerator)
 }
 
-//
 // ------- Payment Service --------
-//
 type ShopPaymentServiceClient struct {
 	ClientBase
 	client pb.PaymentServiceClient
 }
 
-func (c *ShopPaymentServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopPaymentServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewPaymentServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	payload := req.Value
 	// Create a default forward request
@@ -366,12 +377,12 @@ func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input) strin
 
 	fw_res, err := c.client.Charge(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Payment service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopPaymentServiceGenerator struct {
@@ -386,20 +397,22 @@ func (c *ShopPaymentServiceClient) GetGenerator() Generator {
 	return new(ShopPaymentServiceGenerator)
 }
 
-//
 // ------- ProductCatalog Service --------
-//
 type ShopProductCatalogServiceClient struct {
 	ClientBase
 	client pb.ProductCatalogServiceClient
 }
 
-func (c *ShopProductCatalogServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopProductCatalogServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewProductCatalogServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	fw_method := req.Method
 	payload := req.Value
@@ -435,12 +448,12 @@ func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
-		log.Fatalf("Fail to invoke ProductCatalog service: %v", err)
+		return "", err
 	}
 
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopProductCatalogServiceGenerator struct {
@@ -455,20 +468,22 @@ func (c *ShopProductCatalogServiceClient) GetGenerator() Generator {
 	return new(ShopProductCatalogServiceGenerator)
 }
 
-//
 // ------- Recommendation Service --------
-//
 type ShopRecommendationServiceClient struct {
 	ClientBase
 	client pb.RecommendationServiceClient
 }
 
-func (c *ShopRecommendationServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopRecommendationServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewRecommendationServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	payload := req.Value
 	// Create a default forward request
@@ -479,11 +494,11 @@ func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input
 
 	fw_res, err := c.client.ListRecommendations(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Recommendation service: %v", err)
+		return "", err
 	}
 	msg := fmt.Sprintf("%+v", fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopRecommendationServiceGenerator struct {
@@ -498,20 +513,22 @@ func (c *ShopRecommendationServiceClient) GetGenerator() Generator {
 	return new(ShopRecommendationServiceGenerator)
 }
 
-//
 // ------- Shipping Service --------
-//
 type ShopShippingServiceClient struct {
 	ClientBase
 	client pb.ShippingServiceClient
 }
 
-func (c *ShopShippingServiceClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *ShopShippingServiceClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewShippingServiceClient(c.conn)
+	return nil
 }
 
-func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) string {
+func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) (string, error) {
 
 	fw_method := req.Method
 
@@ -542,12 +559,12 @@ func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) stri
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
-		log.Fatalf("Fail to invoke Shipping service: %v", err)
+		return "", err
 	}
 
 	msg = fmt.Sprintf("method: %s, %s", fw_method, msg)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type ShopShippingServiceGenerator struct {

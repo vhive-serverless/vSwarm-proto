@@ -77,8 +77,8 @@ func (s *GeneratorBase) Decrement() int {
 // ------ gRPC Client interface ------
 // Every client must implement this interface
 type GrpcClient interface {
-	Init(ctx context.Context, ip, port string)
-	Request(ctx context.Context, req Input) string
+	Init(ctx context.Context, ip, port string) error
+	Request(ctx context.Context, req Input) (string, error)
 	Close()
 	GetGenerator() Generator
 }
@@ -90,12 +90,12 @@ type ClientBase struct {
 	conn *grpc.ClientConn
 }
 
-func (c *ClientBase) Connect(ctx context.Context, ip, port string) {
+func (c *ClientBase) Connect(ctx context.Context, ip, port string) error {
 	c.ip = ip
 	c.port = port
 	// Connect to the given address
 	address := fmt.Sprintf("%s:%s", c.ip, c.port)
-	log.Debug("Connect to ", address)
+	log.Println("Connect to ", address)
 	var conn *grpc.ClientConn
 	var err error
 	if tracing.IsTracingEnabled() {
@@ -110,10 +110,11 @@ func (c *ClientBase) Connect(ctx context.Context, ip, port string) {
 			log.Fields{
 				"event": "Connecting to benchmark server",
 				"key":   err,
-			}).Fatal("Failed to connect.")
+			})
+		return err
 	}
 	c.conn = conn
-
+	return nil
 }
 
 func (c *ClientBase) Close() {
