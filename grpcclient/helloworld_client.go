@@ -4,7 +4,6 @@ import (
 	"context"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/helloworld"
-	log "github.com/sirupsen/logrus"
 )
 
 // type HelloWorldGenerator struct {
@@ -58,15 +57,19 @@ type HelloWorldClient struct {
 	client pb.GreeterClient
 }
 
-func (c *HelloWorldClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HelloWorldClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewGreeterClient(c.conn)
+	return nil
 }
 
-func (c *HelloWorldClient) Request(ctx context.Context, req Input) string {
+func (c *HelloWorldClient) Request(ctx context.Context, req Input) (string, error) {
 	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: req.Value})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		return "", err
 	}
-	return r.GetMessage()
+	return r.GetMessage(), nil
 }
