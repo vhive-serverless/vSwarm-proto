@@ -13,7 +13,7 @@ replace (
 
 require (
 	github.com/sirupsen/logrus v1.9.3
-	github.com/vhive-serverless/vSwarm/utils/tracing/go v0.0.0-20230727165743-4ad2878e57cb
+	github.com/vhive-serverless/vSwarm/utils/tracing/go v0.0.0-20230802102142-dbfda39fc27c
 	google.golang.org/grpc v1.57.0
 	google.golang.org/protobuf v1.31.0
 )
@@ -27,9 +27,9 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.42.0 // indirect
 	go.opentelemetry.io/otel v1.16.0 // indirect
-	go.opentelemetry.io/otel/exporters/zipkin v1.16.0 // indirect
+	go.opentelemetry.io/otel/exporters/zipkin v1.8.0 // indirect
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.16.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.14.0 // indirect
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	golang.org/x/net v0.13.0 // indirect
 	golang.org/x/oauth2 v0.10.0 // indirect
