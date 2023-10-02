@@ -19,7 +19,7 @@ jobs:
         with:
           go-version: 1.18
       - name: Checkout code into go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Lint with golangci-lint
         uses: golangci/golangci-lint-action@v3.7.0
         with:
