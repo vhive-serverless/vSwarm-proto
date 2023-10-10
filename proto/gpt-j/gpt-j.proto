@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "github.com/vhive-serverless/vSwarm-proto/proto/gpt-j";
+
+package gptj;
+
+// The greeting service definition.
+service GPTJBenchmark {
+  rpc GetBenchmark (GPTJBenchmarkRequest) returns (GPTJBenchmarkReply) {}
+}
+
+// The request message containing the user's name.
+message GPTJBenchmarkRequest {
+  bool regenerate = 1; // Calling this will rerun the benchmark if true, else just read from benchmark results on txt file
+}
+
+// The response message containing the greetings
+message GPTJBenchmarkReply {
+  int64 min_latency = 1;
+  int64 max_latency = 2;
+  int64 mean_latency = 3;
+}
