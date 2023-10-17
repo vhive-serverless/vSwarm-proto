@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "github.com/vhive-serverless/vSwarm-proto/proto/opt-125m";
+
+package opt125m;
+
+service Opt125mBenchmark {
+  rpc GetBenchmark (Opt125mBenchmarkRequest) returns (Opt125mBenchmarkReply) {}
+}
+
+message Opt125mBenchmarkRequest {
+  bool regenerate = 1; // Calling this will rerun the benchmark if true, else just read from benchmark results on txt file
+}
+
+message Opt125mBenchmarkReply {
+  int64 min_latency = 1;
+  int64 max_latency = 2;
+  int64 mean_latency = 3;
+}
