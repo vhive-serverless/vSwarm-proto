@@ -12,6 +12,8 @@ func FindServiceName(functionName string) string {
 		return "auth"
 	case "fibonacci-go", "fibonacci-python", "fibonacci-nodejs", "fibonacci-cpp":
 		return "fibonacci"
+	case "image_classification-python":
+		return "image_classification"
 	default:
 		return functionName
 	}
@@ -33,6 +35,9 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "fibonacci":
 		log.Debug("Found Fibonacci client")
 		return new(FibonacciClient)
+	case "image_classification":
+		log.Debug("Found Image Classification client")
+		return new(ImgClassificationClient)
 
 		// Hotel reservation ---
 	case "Geo", "geo":
