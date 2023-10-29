@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/vhive-serverless/vSwarm-proto/proto/gptj";
+
+package gptj;
+
+service GptJBenchmark {
+  rpc GetBenchmark (GptJBenchmarkRequest) returns (GptJBenchmarkReply) {}
+}
+
+message GptJBenchmarkRequest {
+  string regenerate = 1; // Calling this will rerun the benchmark if true, else just read from benchmark results on txt file
+}
+
+message GptJBenchmarkReply {
+  string latency_info = 1;
+}
