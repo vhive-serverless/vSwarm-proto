@@ -14,6 +14,8 @@ func FindServiceName(functionName string) string {
 		return "fibonacci"
 	case "gptj-python":
 		return "gptj"
+	case "spright-parking-python":
+		return "spright-parking"
 	default:
 		return functionName
 	}
@@ -90,6 +92,11 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "Shipping", "shippingservice":
 		log.Debug("Found Shipping client for online shop")
 		return new(ShopShippingServiceClient)
+
+	// Spright parking ---
+	case "spright-parking":
+		log.Debug("Found Spright client for spright parking")
+		return new(ParkingClient)
 
 	// Default ---------
 	default:
