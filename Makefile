@@ -3,6 +3,7 @@
 proto-all: proto-all-python proto-all-go
 
 proto-all-python:
+	# pipenv --python /usr/bin/python3 
 	pipenv install
 	pipenv run \
 	python3 -m grpc_tools.protoc -I. \
