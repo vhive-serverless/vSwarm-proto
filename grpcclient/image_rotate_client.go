@@ -34,9 +34,9 @@ func (c *ImageRotateClient) Init(ctx context.Context, ip, port string) error {
 }
 
 func (c *ImageRotateClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.RotateImage(ctx, &pb.SendImage{SendImage: req.Value})
+	r, err := c.client.RotateImage(ctx, &pb.SendImage{Name: req.Value})
 	if err != nil {
 		return "", err
 	}
-	return r.GetRotatedImage(), nil
+	return r.GetMessage(), nil
 }
