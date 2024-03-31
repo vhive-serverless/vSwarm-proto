@@ -6,7 +6,6 @@ import (
 	"math/rand"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/fibonacci"
-	log "github.com/sirupsen/logrus"
 )
 
 type FibonacciGenerator struct {
@@ -37,16 +36,20 @@ type FibonacciClient struct {
 	client pb.GreeterClient
 }
 
-func (c *FibonacciClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *FibonacciClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewGreeterClient(c.conn)
+	return nil
 }
 
-func (c *FibonacciClient) Request(ctx context.Context, req Input) string {
+func (c *FibonacciClient) Request(ctx context.Context, req Input) (string, error) {
 	var fibonacciMessage = req.Value
 	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: fibonacciMessage})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		return "", err
 	}
-	return r.GetMessage()
+	return r.GetMessage(), nil
 }

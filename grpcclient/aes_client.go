@@ -4,7 +4,6 @@ import (
 	"context"
 	"math/rand"
 
-	log "github.com/sirupsen/logrus"
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/aes"
 )
 
@@ -49,16 +48,19 @@ type AesClient struct {
 	client pb.AesClient
 }
 
-func (c *AesClient) Init(ctx context.Context, ip, port string) {
-	log.Printf("Connect to: %s:%s\n", ip, port)
-	c.Connect(ctx, ip, port)
+func (c *AesClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = pb.NewAesClient(c.conn)
+	return nil
 }
 
-func (c *AesClient) Request(ctx context.Context, req Input) string {
+func (c *AesClient) Request(ctx context.Context, req Input) (string, error) {
 	r, err := c.client.ShowEncryption(ctx, &pb.PlainTextMessage{PlaintextMessage: req.Value})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		return "", err
 	}
-	return r.GetEncryptionInfo()
+	return r.GetEncryptionInfo(), nil
 }

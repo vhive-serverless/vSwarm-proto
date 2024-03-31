@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Go 1.18
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: 1.18
       - name: Checkout code into go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Lint with golangci-lint
-        uses: golangci/golangci-lint-action@v3.6.0
+        uses: golangci/golangci-lint-action@v3.7.0
         with:
           args: --timeout 5m
           skip-cache: true

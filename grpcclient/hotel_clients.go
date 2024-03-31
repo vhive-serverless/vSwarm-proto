@@ -18,7 +18,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-//
 // Hotel reservation -----
 // 1. Geo service
 type HotelGeoClient struct {
@@ -26,12 +25,16 @@ type HotelGeoClient struct {
 	client geo.GeoClient
 }
 
-func (c *HotelGeoClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelGeoClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = geo.NewGeoClient(c.conn)
+	return nil
 }
 
-func (c *HotelGeoClient) Request(ctx context.Context, req Input) string {
+func (c *HotelGeoClient) Request(ctx context.Context, req Input) (string, error) {
 	// Create a default forward request
 	coordinates := strings.Split(req.Value, ",")
 
@@ -45,12 +48,12 @@ func (c *HotelGeoClient) Request(ctx context.Context, req Input) string {
 
 	fw_res, err := c.client.Nearby(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Geo service: %v", err)
+		return "Fail to invoke Geo service", err
 	}
 
 	msg := fmt.Sprintf("req: { Lat:%f Lon:%f} resp: %+v", fw_req.Lon, fw_req.Lat, fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, err
 }
 
 type HotelGeoGenerator struct {
@@ -87,12 +90,16 @@ type HotelProfileClient struct {
 	client profile.ProfileClient
 }
 
-func (c *HotelProfileClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelProfileClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = profile.NewProfileClient(c.conn)
+	return nil
 }
 
-func (c *HotelProfileClient) Request(ctx context.Context, req Input) string {
+func (c *HotelProfileClient) Request(ctx context.Context, req Input) (string, error) {
 	payload := req.Value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -103,12 +110,12 @@ func (c *HotelProfileClient) Request(ctx context.Context, req Input) string {
 
 	fw_res, err := c.client.GetProfiles(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Profile service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("req: {HotelIds: %+v, Locale: \"\"} resp: %+v", ids, fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type HotelProfileGenerator struct {
@@ -150,12 +157,16 @@ type HotelRateClient struct {
 	client rate.RateClient
 }
 
-func (c *HotelRateClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelRateClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = rate.NewRateClient(c.conn)
+	return nil
 }
 
-func (c *HotelRateClient) Request(ctx context.Context, req Input) string {
+func (c *HotelRateClient) Request(ctx context.Context, req Input) (string, error) {
 	payload := req.Value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -166,12 +177,12 @@ func (c *HotelRateClient) Request(ctx context.Context, req Input) string {
 	}
 	fw_res, err := c.client.GetRates(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Rate service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("req: {HotelIds: %+v, InDate: \"2015-04-09\", OutDate: \"2015-04-11\"}, resp: %+v", ids, fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type HotelRateGenerator struct {
@@ -204,12 +215,16 @@ type HotelRecommendationClient struct {
 	client recommendation.RecommendationClient
 }
 
-func (c *HotelRecommendationClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelRecommendationClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = recommendation.NewRecommendationClient(c.conn)
+	return nil
 }
 
-func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) string {
+func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) (string, error) {
 
 	// Create a default forward request
 	coordinates := strings.Split(req.Value, ",")
@@ -232,12 +247,12 @@ func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) stri
 
 	fw_res, err := c.client.GetRecommendations(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Recommendation service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("req: {Require: \"dis\", Lat:%f Lon:%f}, resp: %+v", fw_req.Lon, fw_req.Lat, fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type HotelRecommendationGenerator struct {
@@ -268,12 +283,16 @@ type HotelReservationClient struct {
 	client reservation.ReservationClient
 }
 
-func (c *HotelReservationClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelReservationClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = reservation.NewReservationClient(c.conn)
+	return nil
 }
 
-func (c *HotelReservationClient) Request(ctx context.Context, req Input) string {
+func (c *HotelReservationClient) Request(ctx context.Context, req Input) (string, error) {
 	fw_method := req.Method
 	payload := strings.Split(req.Value, ",")
 	// Create a default forward request
@@ -302,12 +321,12 @@ func (c *HotelReservationClient) Request(ctx context.Context, req Input) string 
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
 	}
 	if err != nil {
-		log.Fatalf("Fail to invoke Reservation service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("method: %s, req: {CustomerName: %s, HotelId: %v, InDate: \"2015-04-09\", OutDate: \"2015-04-11\", RoomNumber: 1,} resp: %+v", fw_method, fw_req.CustomerName, fw_req.HotelId, fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type HotelReservationGenerator struct {
@@ -345,12 +364,16 @@ type HotelUserClient struct {
 	client user.UserClient
 }
 
-func (c *HotelUserClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelUserClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = user.NewUserClient(c.conn)
+	return nil
 }
 
-func (c *HotelUserClient) Request(ctx context.Context, req Input) string {
+func (c *HotelUserClient) Request(ctx context.Context, req Input) (string, error) {
 	payload := strings.Split(req.Value, ",")
 
 	// Create a forward request
@@ -361,12 +384,12 @@ func (c *HotelUserClient) Request(ctx context.Context, req Input) string {
 
 	fw_res, err := c.client.CheckUser(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke User service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("req: {Username: %s, Password: %s} resp: Correct:%v", fw_req.Username, fw_req.Password, fw_res.Correct)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type HotelUserGenerator struct {
@@ -404,12 +427,16 @@ type HotelSearchClient struct {
 	client search.SearchClient
 }
 
-func (c *HotelSearchClient) Init(ctx context.Context, ip, port string) {
-	c.Connect(ctx, ip, port)
+func (c *HotelSearchClient) Init(ctx context.Context, ip, port string) error {
+	err := c.Connect(ctx, ip, port)
+	if err != nil {
+		return err
+	}
 	c.client = search.NewSearchClient(c.conn)
+	return nil
 }
 
-func (c *HotelSearchClient) Request(ctx context.Context, req Input) string {
+func (c *HotelSearchClient) Request(ctx context.Context, req Input) (string, error) {
 	// Create a forward request
 	fw_req := search.NearbyRequest{
 		Lat:     37.7963,
@@ -420,12 +447,12 @@ func (c *HotelSearchClient) Request(ctx context.Context, req Input) string {
 
 	fw_res, err := c.client.Nearby(ctx, &fw_req)
 	if err != nil {
-		log.Fatalf("Fail to invoke Search service: %v", err)
+		return "", err
 	}
 
 	msg := fmt.Sprintf("req: {Lat: 37.7963, Lon: -122.4015, InDate: \"2015-04-09\", OutDate: \"2015-04-11\"}, resp: %+v", fw_res)
 	// log.Println(msg)
-	return msg
+	return msg, nil
 }
 
 type HotelSearchGenerator struct {
