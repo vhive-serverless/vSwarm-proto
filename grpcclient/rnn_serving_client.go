@@ -59,7 +59,7 @@ func (c *RNNServingClient) Init(ctx context.Context, ip, port string) error {
 func (c *RNNServingClient) Request(ctx context.Context, req Input) (string, error) {
 
 	inputs = strings.Split(req.Value, " ")
-	language, _ := inputs[0]
+	language := inputs[0]
 	numSamples, _ := strconv.ParseInt(inputs[1], 10, 32)
 
 	r, err := c.client.GenerateString(ctx, &pb.SendLanguage{Language: string(language), NumSamples: int32(numSamples)})
