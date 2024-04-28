@@ -30,7 +30,13 @@ func (g *AesGenerator) Next() Input {
 
 func (g *AesGenerator) randSeq() string {
 	// Make random length
-	l := g.lowerBound + rand.Intn(g.upperBound-g.lowerBound)
+	var l int
+	if g.lowerBound == g.upperBound {
+		l = g.lowerBound
+	} else {
+		l = g.lowerBound + rand.Intn(g.upperBound-g.lowerBound)
+	}
+
 	b := make([]rune, l)
 	// make the string
 	for i := range b {

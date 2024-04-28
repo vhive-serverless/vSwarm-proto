@@ -16,6 +16,8 @@ func FindServiceName(functionName string) string {
 		return "gptj"
 	case "image-rotate-python", "image-rotate-nodejs", "image-rotate-go", "image-rotate-cython":
 		return "image-rotate"
+	case "rnn-serving-python":
+		return "rnn-serving"
 	case "video-processing-python":
 		return "video-processing"
 	default:
@@ -46,6 +48,10 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "image-rotate":
 		log.Debug("Found image rotate client")
 		return new(ImageRotateClient)
+
+	case "rnn-serving":
+		log.Debug("Found rnn-serving client")
+		return new(RNNServingClient)
 
 	case "video-processing":
 		log.Debug("Found video processing client")
