@@ -3,6 +3,8 @@ package grpcclient
 import (
 	"context"
 	"math/rand"
+	"strconv"
+	"strings"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/rnn_serving"
 )
@@ -20,14 +22,19 @@ func (g *RNNServingGenerator) Next() Input {
     }
 
 	var pkt = g.defaultInput
-	switch g.GeneratorBase.generator {
-	case Unique:
-		pkt.Value = "French"
-	default:
-		randomCountry := countries[rand.Intn(len(countries))]
-		pkt.Value = randomCountry
-	}
+
+	var language string
+	randomCountry := countries[rand.Intn(len(countries))]
+	language = randomCountry
 	
+	var numSamples int
+	if g.lowerBound == g.upperBound {
+		numSamples = g.lowerBound
+	} else {
+		numSamples = g.lowerBound + rand.Intn(g.upperBound-g.lowerBound)
+	}
+
+	pkt.Value = language + " " + strconv.Itoa(numSamples)
 	return pkt
 }
 
@@ -51,14 +58,11 @@ func (c *RNNServingClient) Init(ctx context.Context, ip, port string) error {
 
 func (c *RNNServingClient) Request(ctx context.Context, req Input) (string, error) {
 
-	var numSamples int
-	if g.lowerBound == g.upperBound {
-		numSamples = g.lowerBound
-	} else {
-		numSamples = g.lowerBound + rand.Intn(g.upperBound-g.lowerBound)
-	}
+	inputs = strings.Split(req.Value, " ")
+	language, _ := inputs[0]
+	numSamples, _ := strconv.ParseInt(inputs[1], 10, 32)
 
-	r, err := c.client.GenerateString(ctx, &pb.SendLanguage{Language: float32(req.Value), NumSamples: float32(numSamples)})
+	r, err := c.client.GenerateString(ctx, &pb.SendLanguage{Language: string(language), NumSamples: int32(numSamples)})
 	if err != nil {
 		return "", err
 	}
