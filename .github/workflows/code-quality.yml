@@ -21,7 +21,7 @@ jobs:
       - name: Checkout code into go module directory
         uses: actions/checkout@v4
       - name: Lint with golangci-lint
-        uses: golangci/golangci-lint-action@v4.0.0
+        uses: golangci/golangci-lint-action@v5.0.0
         with:
           args: --timeout 5m
           skip-cache: true
