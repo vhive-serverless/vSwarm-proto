@@ -94,7 +94,7 @@ func FindGrpcClient(service_name string) GrpcClient {
 		return new(ShopShippingServiceClient)
 
 	// Spright parking ---
-	case "spright":
+	case "spright-parking":
 		log.Debug("Found Spright client for spright parking")
 		return new(ParkingClient)
 
