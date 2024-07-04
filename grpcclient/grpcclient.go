@@ -59,6 +59,20 @@ func (s *GeneratorBase) SetMethod(method string) {
 	s.defaultInput.Method = method
 }
 
+func StringToGeneratorType(gs string) GeneratorType {
+	switch gs {
+	case "unique":
+		return Unique
+	case "linear":
+		return Linear
+	case "random":
+		return Random
+	default:
+		log.Error("Unknown generator type. Allowed values are: unique, linear, random.")
+		return Unique
+	}
+}
+
 func (s *GeneratorBase) Increment() int {
 	s.count += 1
 	if s.count > s.upperBound {
