@@ -18,6 +18,8 @@ func FindServiceName(functionName string) string {
 		return "image-rotate"
 	case "rnn-serving-python":
 		return "rnn-serving"
+	case "compression-python":
+		return "compression"
 	case "video-processing-python":
 		return "video-processing"
 	case "video-analytics-standalone-python":
