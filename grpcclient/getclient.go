@@ -12,6 +12,8 @@ func FindServiceName(functionName string) string {
 		return "auth"
 	case "fibonacci-go", "fibonacci-python", "fibonacci-nodejs", "fibonacci-cpp":
 		return "fibonacci"
+	case "compression-python":
+		return "compression"
 	case "gptj-python":
 		return "gptj"
 	case "spright-parking-python":
@@ -37,6 +39,9 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "fibonacci":
 		log.Debug("Found Fibonacci client")
 		return new(FibonacciClient)
+	case "compression":
+		log.Debug("Found Compression client")
+		return new(FileCompressClient)
 	case "gptj":
 		log.Debug("Found gptj client")
 		return new(GptJClient)
