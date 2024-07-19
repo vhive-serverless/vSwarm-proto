@@ -114,10 +114,10 @@ func (c *ClientBase) Connect(ctx context.Context, ip, port string) error {
 	var err error
 	if tracing.IsTracingEnabled() {
 		log.Debug("Tracing is enabled.")
-		conn, err = tracing.DialGRPCWithUnaryInterceptor(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+		conn, err = tracing.DialGRPCWithUnaryInterceptor(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	} else {
 		log.Debug("Tracing is disabled.")
-		conn, err = grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+		conn, err = grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 	if err != nil {
 		log.WithFields(
