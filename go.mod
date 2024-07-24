@@ -14,6 +14,8 @@ replace (
 	github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
 	github.com/vhive-serverless/vSwarm-proto/proto/image_rotate => ./proto/image_rotate
 	github.com/vhive-serverless/vSwarm-proto/proto/video_processing => ./proto/video_processing
+	github.com/vhive-serverless/vSwarm-proto/proto/rnn_serving => ./proto/rnn_serving
+	github.com/vhive-serverless/vSwarm-proto/proto/video_analytics_standalone => ./proto/video_analytics_standalone
 )
 
 require (
