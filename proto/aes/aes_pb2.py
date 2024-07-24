@@ -4,9 +4,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -16,33 +15,17 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/aes/aes.proto\x12\x03\x61\x65s\"-\n\x10PlainTextMessage\x12\x19\n\x11plaintext_message\x18\x01 \x01(\t\"/\n\x14ReturnEncryptionInfo\x12\x17\n\x0f\x65ncryption_info\x18\x01 \x01(\t2K\n\x03\x41\x65s\x12\x44\n\x0eShowEncryption\x12\x15.aes.PlainTextMessage\x1a\x19.aes.ReturnEncryptionInfo\"\x00\x42\x34Z2github.com/vhive-serverless/vSwarm-proto/proto/aesb\x06proto3')
 
-
-
-_PLAINTEXTMESSAGE = DESCRIPTOR.message_types_by_name['PlainTextMessage']
-_RETURNENCRYPTIONINFO = DESCRIPTOR.message_types_by_name['ReturnEncryptionInfo']
-PlainTextMessage = _reflection.GeneratedProtocolMessageType('PlainTextMessage', (_message.Message,), {
-  'DESCRIPTOR' : _PLAINTEXTMESSAGE,
-  '__module__' : 'proto.aes.aes_pb2'
-  # @@protoc_insertion_point(class_scope:aes.PlainTextMessage)
-  })
-_sym_db.RegisterMessage(PlainTextMessage)
-
-ReturnEncryptionInfo = _reflection.GeneratedProtocolMessageType('ReturnEncryptionInfo', (_message.Message,), {
-  'DESCRIPTOR' : _RETURNENCRYPTIONINFO,
-  '__module__' : 'proto.aes.aes_pb2'
-  # @@protoc_insertion_point(class_scope:aes.ReturnEncryptionInfo)
-  })
-_sym_db.RegisterMessage(ReturnEncryptionInfo)
-
-_AES = DESCRIPTOR.services_by_name['Aes']
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'proto.aes.aes_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'Z2github.com/vhive-serverless/vSwarm-proto/proto/aes'
-  _PLAINTEXTMESSAGE._serialized_start=28
-  _PLAINTEXTMESSAGE._serialized_end=73
-  _RETURNENCRYPTIONINFO._serialized_start=75
-  _RETURNENCRYPTIONINFO._serialized_end=122
-  _AES._serialized_start=124
-  _AES._serialized_end=199
+  _globals['_PLAINTEXTMESSAGE']._serialized_start=28
+  _globals['_PLAINTEXTMESSAGE']._serialized_end=73
+  _globals['_RETURNENCRYPTIONINFO']._serialized_start=75
+  _globals['_RETURNENCRYPTIONINFO']._serialized_end=122
+  _globals['_AES']._serialized_start=124
+  _globals['_AES']._serialized_end=199
 # @@protoc_insertion_point(module_scope)

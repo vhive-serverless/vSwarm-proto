@@ -20,6 +20,10 @@ func FindServiceName(functionName string) string {
 		return "image-rotate"
 	case "video-processing-python":
 		return "video-processing"
+	case "rnn-serving-python":
+		return "rnn-serving"
+	case "video-analytics-standalone-python":
+		return "video-analytics-standalone"
 	case "spright-parking-python":
 		return "spright-parking"
 	default:
@@ -55,6 +59,12 @@ func FindGrpcClient(service_name string) GrpcClient {
 	case "video-processing":
 		log.Debug("Found video processing client")
 		return new(VideoProcessingClient)
+	case "rnn-serving":
+		log.Debug("Found rnn serving client")
+		return new(RNNServingClient)
+	case "video-analytics-standalone":
+		log.Debug("Found video analytics standalone client")
+		return new(VideoAnalyticsClient)
 
 		// Hotel reservation ---
 	case "Geo", "geo":

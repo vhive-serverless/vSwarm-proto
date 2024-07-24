@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import gptj_pb2 as gptj__pb2
+from proto.gptj import gptj_pb2 as proto_dot_gptj_dot_gptj__pb2
 
 
 class GptJBenchmarkStub(object):
@@ -16,8 +16,8 @@ class GptJBenchmarkStub(object):
         """
         self.GetBenchmark = channel.unary_unary(
                 '/gptj.GptJBenchmark/GetBenchmark',
-                request_serializer=gptj__pb2.GptJBenchmarkRequest.SerializeToString,
-                response_deserializer=gptj__pb2.GptJBenchmarkReply.FromString,
+                request_serializer=proto_dot_gptj_dot_gptj__pb2.GptJBenchmarkRequest.SerializeToString,
+                response_deserializer=proto_dot_gptj_dot_gptj__pb2.GptJBenchmarkReply.FromString,
                 )
 
 
@@ -35,8 +35,8 @@ def add_GptJBenchmarkServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetBenchmark': grpc.unary_unary_rpc_method_handler(
                     servicer.GetBenchmark,
-                    request_deserializer=gptj__pb2.GptJBenchmarkRequest.FromString,
-                    response_serializer=gptj__pb2.GptJBenchmarkReply.SerializeToString,
+                    request_deserializer=proto_dot_gptj_dot_gptj__pb2.GptJBenchmarkRequest.FromString,
+                    response_serializer=proto_dot_gptj_dot_gptj__pb2.GptJBenchmarkReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -60,7 +60,7 @@ class GptJBenchmark(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/gptj.GptJBenchmark/GetBenchmark',
-            gptj__pb2.GptJBenchmarkRequest.SerializeToString,
-            gptj__pb2.GptJBenchmarkReply.FromString,
+            proto_dot_gptj_dot_gptj__pb2.GptJBenchmarkRequest.SerializeToString,
+            proto_dot_gptj_dot_gptj__pb2.GptJBenchmarkReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
