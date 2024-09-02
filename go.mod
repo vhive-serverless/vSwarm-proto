@@ -13,15 +13,15 @@ replace (
 	github.com/vhive-serverless/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
 	github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
 	github.com/vhive-serverless/vSwarm-proto/proto/image_rotate => ./proto/image_rotate
-	github.com/vhive-serverless/vSwarm-proto/proto/video_processing => ./proto/video_processing
 	github.com/vhive-serverless/vSwarm-proto/proto/rnn_serving => ./proto/rnn_serving
 	github.com/vhive-serverless/vSwarm-proto/proto/video_analytics_standalone => ./proto/video_analytics_standalone
+	github.com/vhive-serverless/vSwarm-proto/proto/video_processing => ./proto/video_processing
 )
 
 require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/vhive-serverless/vSwarm/utils/tracing/go v0.0.0-20240715172541-1edab0214c9d
-	google.golang.org/grpc v1.65.0
+	google.golang.org/grpc v1.66.0
 	google.golang.org/protobuf v1.34.2
 )
 
@@ -35,8 +35,8 @@ require (
 	go.opentelemetry.io/otel/metric v1.26.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.26.0 // indirect
 	go.opentelemetry.io/otel/trace v1.26.0 // indirect
-	golang.org/x/net v0.25.0 // indirect
-	golang.org/x/sys v0.20.0 // indirect
-	golang.org/x/text v0.15.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157 // indirect
+	golang.org/x/net v0.26.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/text v0.16.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117 // indirect
 )
