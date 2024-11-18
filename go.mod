@@ -14,16 +14,16 @@ replace (
 	github.com/vhive-serverless/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
 	github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv => ./proto/hotel_reserv
 	github.com/vhive-serverless/vSwarm-proto/proto/image_rotate => ./proto/image_rotate
-	github.com/vhive-serverless/vSwarm-proto/proto/video_processing => ./proto/video_processing
 	github.com/vhive-serverless/vSwarm-proto/proto/rnn_serving => ./proto/rnn_serving
 	github.com/vhive-serverless/vSwarm-proto/proto/video_analytics_standalone => ./proto/video_analytics_standalone
+	github.com/vhive-serverless/vSwarm-proto/proto/video_processing => ./proto/video_processing
 )
 
 require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/vhive-serverless/vSwarm/utils/tracing/go v0.0.0-20240715172541-1edab0214c9d
 	google.golang.org/grpc v1.65.0
-	google.golang.org/protobuf v1.34.2
+	google.golang.org/protobuf v1.35.2
 )
 
 require (
