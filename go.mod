@@ -8,6 +8,7 @@ replace (
 	github.com/vhive-serverless/vSwarm-proto/proto/aes => ./proto/aes
 	github.com/vhive-serverless/vSwarm-proto/proto/auth => ./proto/auth
 	github.com/vhive-serverless/vSwarm-proto/proto/compression => ./proto/compression
+	github.com/vhive-serverless/vSwarm-proto/proto/graph_bfs => ./proto/graph_bfs
 	github.com/vhive-serverless/vSwarm-proto/proto/fibonacci => ./proto/fibonacci
 	github.com/vhive-serverless/vSwarm-proto/proto/helloworld => ./proto/helloworld
 	github.com/vhive-serverless/vSwarm-proto/proto/hipstershop => ./proto/hipstershop
