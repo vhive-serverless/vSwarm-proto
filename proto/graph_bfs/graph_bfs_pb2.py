@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1fproto/graph_bfs/graph_bfs.proto\x12\tgraph_bfs\"\'\n\x18GraphBFSBenchmarkRequest\x12\x0b\n\x03\x64ur\x18\x01 \x01(\t\"+\n\x16GraphBFSBenchmarkReply\x12\x11\n\tbfs_count\x18\x01 \x01(\t2g\n\x11GraphBFSBenchmark\x12R\n\x06GetBfs\x12#.graph_bfs.GraphBFSBenchmarkRequest\x1a!.graph_bfs.GraphBFSBenchmarkReply\"\x00\x42:Z8github.com/vhive-serverless/vSwarm-proto/proto/graph_bfsb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1fproto/graph_bfs/graph_bfs.proto\x12\tgraph_bfs\"(\n\x18GraphBFSBenchmarkRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x16GraphBFSBenchmarkReply\x12\x0f\n\x07message\x18\x01 \x01(\t2g\n\x11GraphBFSBenchmark\x12R\n\x06GetBfs\x12#.graph_bfs.GraphBFSBenchmarkRequest\x1a!.graph_bfs.GraphBFSBenchmarkReply\"\x00\x42:Z8github.com/vhive-serverless/vSwarm-proto/proto/graph_bfsb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,9 +33,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z8github.com/vhive-serverless/vSwarm-proto/proto/graph_bfs'
   _globals['_GRAPHBFSBENCHMARKREQUEST']._serialized_start=46
-  _globals['_GRAPHBFSBENCHMARKREQUEST']._serialized_end=85
-  _globals['_GRAPHBFSBENCHMARKREPLY']._serialized_start=87
-  _globals['_GRAPHBFSBENCHMARKREPLY']._serialized_end=130
-  _globals['_GRAPHBFSBENCHMARK']._serialized_start=132
-  _globals['_GRAPHBFSBENCHMARK']._serialized_end=235
+  _globals['_GRAPHBFSBENCHMARKREQUEST']._serialized_end=86
+  _globals['_GRAPHBFSBENCHMARKREPLY']._serialized_start=88
+  _globals['_GRAPHBFSBENCHMARKREPLY']._serialized_end=129
+  _globals['_GRAPHBFSBENCHMARK']._serialized_start=131
+  _globals['_GRAPHBFSBENCHMARK']._serialized_end=234
 # @@protoc_insertion_point(module_scope)

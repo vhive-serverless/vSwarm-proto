@@ -45,7 +45,7 @@ const (
 
 type GraphBFSBenchmarkRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Dur           string                 `protobuf:"bytes,1,opt,name=dur,proto3" json:"dur,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -80,16 +80,16 @@ func (*GraphBFSBenchmarkRequest) Descriptor() ([]byte, []int) {
 	return file_proto_graph_bfs_graph_bfs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GraphBFSBenchmarkRequest) GetDur() string {
+func (x *GraphBFSBenchmarkRequest) GetName() string {
 	if x != nil {
-		return x.Dur
+		return x.Name
 	}
 	return ""
 }
 
 type GraphBFSBenchmarkReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BfsCount      string                 `protobuf:"bytes,1,opt,name=bfs_count,json=bfsCount,proto3" json:"bfs_count,omitempty"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -124,9 +124,9 @@ func (*GraphBFSBenchmarkReply) Descriptor() ([]byte, []int) {
 	return file_proto_graph_bfs_graph_bfs_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GraphBFSBenchmarkReply) GetBfsCount() string {
+func (x *GraphBFSBenchmarkReply) GetMessage() string {
 	if x != nil {
-		return x.BfsCount
+		return x.Message
 	}
 	return ""
 }
@@ -135,11 +135,11 @@ var File_proto_graph_bfs_graph_bfs_proto protoreflect.FileDescriptor
 
 const file_proto_graph_bfs_graph_bfs_proto_rawDesc = "" +
 	"\n" +
-	"\x1fproto/graph_bfs/graph_bfs.proto\x12\tgraph_bfs\",\n" +
-	"\x18GraphBFSBenchmarkRequest\x12\x10\n" +
-	"\x03dur\x18\x01 \x01(\tR\x03dur\"5\n" +
-	"\x16GraphBFSBenchmarkReply\x12\x1b\n" +
-	"\tbfs_count\x18\x01 \x01(\tR\bbfsCount2g\n" +
+	"\x1fproto/graph_bfs/graph_bfs.proto\x12\tgraph_bfs\".\n" +
+	"\x18GraphBFSBenchmarkRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"2\n" +
+	"\x16GraphBFSBenchmarkReply\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2g\n" +
 	"\x11GraphBFSBenchmark\x12R\n" +
 	"\x06GetBfs\x12#.graph_bfs.GraphBFSBenchmarkRequest\x1a!.graph_bfs.GraphBFSBenchmarkReply\"\x00B:Z8github.com/vhive-serverless/vSwarm-proto/proto/graph_bfsb\x06proto3"
 

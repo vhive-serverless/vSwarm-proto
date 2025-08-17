@@ -32,9 +32,9 @@ service GraphBFSBenchmark {
 }
 
 message GraphBFSBenchmarkRequest {
-  string dur = 1; 
+  string name = 1; 
 }
 
 message GraphBFSBenchmarkReply {
-  string bfs_count = 1;
+  string message = 1;
 }
