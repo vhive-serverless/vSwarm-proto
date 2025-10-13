@@ -1,6 +1,6 @@
 module github.com/vhive-serverless/vSwarm-proto
 
-go 1.23.0
+go 1.24.0
 
 replace (
 	github.com/vhive-serverless/vSwarm-proto/proto/aes => ./proto/aes
@@ -20,7 +20,7 @@ replace (
 require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/vhive-serverless/vSwarm/utils/tracing/go v0.0.0-20240715172541-1edab0214c9d
-	google.golang.org/grpc v1.75.0
+	google.golang.org/grpc v1.76.0
 	google.golang.org/protobuf v1.36.6
 )
 
@@ -36,8 +36,8 @@ require (
 	go.opentelemetry.io/otel/metric v1.37.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.37.0 // indirect
 	go.opentelemetry.io/otel/trace v1.37.0 // indirect
-	golang.org/x/net v0.41.0 // indirect
-	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/text v0.26.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
+	golang.org/x/net v0.42.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/text v0.27.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250804133106-a7a43d27e69b // indirect
 )
