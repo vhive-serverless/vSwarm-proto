@@ -7,6 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/hipstershop"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -78,7 +79,7 @@ func (c *ShopAdServiceClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *ShopAdServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopAdServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	payload := req.Value
 	// Create a default forward request
@@ -86,7 +87,7 @@ func (c *ShopAdServiceClient) Request(ctx context.Context, req Input) (string, e
 		ContextKeys: []string{payload},
 	}
 
-	fw_res, err := c.client.GetAds(ctx, &fw_req)
+	fw_res, err := c.client.GetAds(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -123,7 +124,7 @@ func (c *ShopCartServiceClient) Init(ctx context.Context, ip, port string) error
 	return nil
 }
 
-func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopCartServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	fw_method := req.Method
 	payload := req.Value
@@ -138,7 +139,7 @@ func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) (string,
 			Item:   &defCartItem1,
 		}
 		var fw_res *pb.Empty
-		fw_res, err = c.client.AddItem(ctx, &fw_req)
+		fw_res, err = c.client.AddItem(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {UserId: %s, Item: %+v} resp: %+v", payload, &defCartItem1, fw_res)
 
 	case "GetCart", "1": // Method 2: GetCart
@@ -146,7 +147,7 @@ func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) (string,
 			UserId: payload,
 		}
 		var fw_res *pb.Cart
-		fw_res, err = c.client.GetCart(ctx, &fw_req)
+		fw_res, err = c.client.GetCart(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {UserId: %s} resp: %+v", payload, fw_res)
 
 	case "EmptyCart", "2": // Method 3: EmptyCart
@@ -154,7 +155,7 @@ func (c *ShopCartServiceClient) Request(ctx context.Context, req Input) (string,
 			UserId: payload,
 		}
 		var fw_res *pb.Empty
-		fw_res, err = c.client.EmptyCart(ctx, &fw_req)
+		fw_res, err = c.client.EmptyCart(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {UserId: %s} resp: %+v", payload, fw_res)
 
 	default:
@@ -197,7 +198,7 @@ func (c *ShopCheckoutServiceClient) Init(ctx context.Context, ip, port string) e
 	return nil
 }
 
-func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	// Pass on to the real service function
 	payload := req.Value
@@ -211,7 +212,7 @@ func (c *ShopCheckoutServiceClient) Request(ctx context.Context, req Input) (str
 		CreditCard:   &defCreditCard,
 	}
 
-	fw_res, err := c.client.PlaceOrder(ctx, &fw_req)
+	fw_res, err := c.client.PlaceOrder(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -248,7 +249,7 @@ func (c *ShopCurrencyServiceClient) Init(ctx context.Context, ip, port string) e
 	return nil
 }
 
-func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	fw_method, payload := req.Method, req.Value
 	// Pass on to the real service function
@@ -259,7 +260,7 @@ func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) (str
 	case "GetSupportedCurrencies", "0": // Method 1: GetSupportedCurrencies
 		fw_req := pb.Empty{}
 		var fw_res *pb.GetSupportedCurrenciesResponse
-		fw_res, err = c.client.GetSupportedCurrencies(ctx, &fw_req)
+		fw_res, err = c.client.GetSupportedCurrencies(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {} resp: %+v", fw_res)
 
 	case "Convert", "1": // Method 2: Convert
@@ -272,7 +273,7 @@ func (c *ShopCurrencyServiceClient) Request(ctx context.Context, req Input) (str
 		}
 
 		var fw_res *pb.Money
-		fw_res, err = c.client.Convert(ctx, &fw_req)
+		fw_res, err = c.client.Convert(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {From: %+v, ToCode: \"EUR\"} resp: %+v", &defMoney, fw_res)
 
 	default:
@@ -314,7 +315,7 @@ func (c *ShopEmailServiceClient) Init(ctx context.Context, ip, port string) erro
 	return nil
 }
 
-func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	// Pass on to the real service function
 	// _, payload := getMethodPayload(req)
@@ -325,7 +326,7 @@ func (c *ShopEmailServiceClient) Request(ctx context.Context, req Input) (string
 		Order: &defOrder,
 	}
 
-	fw_res, err := c.client.SendOrderConfirmation(ctx, &fw_req)
+	fw_res, err := c.client.SendOrderConfirmation(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -362,7 +363,7 @@ func (c *ShopPaymentServiceClient) Init(ctx context.Context, ip, port string) er
 	return nil
 }
 
-func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	payload := req.Value
 	// Create a default forward request
@@ -375,7 +376,7 @@ func (c *ShopPaymentServiceClient) Request(ctx context.Context, req Input) (stri
 		fw_req.Amount.Units = v
 	}
 
-	fw_res, err := c.client.Charge(ctx, &fw_req)
+	fw_res, err := c.client.Charge(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -412,7 +413,7 @@ func (c *ShopProductCatalogServiceClient) Init(ctx context.Context, ip, port str
 	return nil
 }
 
-func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	fw_method := req.Method
 	payload := req.Value
@@ -425,7 +426,7 @@ func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input
 	case "ListProducts", "0": // Method 1: ListProducts
 		fw_req := pb.Empty{}
 		var fw_res *pb.ListProductsResponse
-		fw_res, err = c.client.ListProducts(ctx, &fw_req)
+		fw_res, err = c.client.ListProducts(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {} resp: %+v", fw_res)
 
 	case "GetProduct", "1": // Method 2: GetProduct
@@ -433,7 +434,7 @@ func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input
 			Id: payload,
 		}
 		var fw_res *pb.Product
-		fw_res, err = c.client.GetProduct(ctx, &fw_req)
+		fw_res, err = c.client.GetProduct(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {Id: %s} resp: %+v", payload, fw_res)
 
 	case "SearchProducts", "2": // Method 3: SearchProducts
@@ -441,7 +442,7 @@ func (c *ShopProductCatalogServiceClient) Request(ctx context.Context, req Input
 			Query: payload,
 		}
 		var fw_res *pb.SearchProductsResponse
-		fw_res, err = c.client.SearchProducts(ctx, &fw_req)
+		fw_res, err = c.client.SearchProducts(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {Query: %s} resp: %+v", payload, fw_res)
 
 	default:
@@ -483,7 +484,7 @@ func (c *ShopRecommendationServiceClient) Init(ctx context.Context, ip, port str
 	return nil
 }
 
-func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	payload := req.Value
 	// Create a default forward request
@@ -492,7 +493,7 @@ func (c *ShopRecommendationServiceClient) Request(ctx context.Context, req Input
 		ProductIds: []string{defProductId1, defProductId2},
 	}
 
-	fw_res, err := c.client.ListRecommendations(ctx, &fw_req)
+	fw_res, err := c.client.ListRecommendations(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -528,7 +529,7 @@ func (c *ShopShippingServiceClient) Init(ctx context.Context, ip, port string) e
 	return nil
 }
 
-func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	fw_method := req.Method
 
@@ -543,7 +544,7 @@ func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) (str
 			Items:   []*pb.CartItem{&defCartItem1, &defCartItem2},
 		}
 		var fw_res *pb.GetQuoteResponse
-		fw_res, err = c.client.GetQuote(ctx, &fw_req)
+		fw_res, err = c.client.GetQuote(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {Address: %+v, Items: %+v} resp: %+v", &defAddress, []*pb.CartItem{&defCartItem1, &defCartItem2}, fw_res)
 
 	case "ShipOrder", "1": // Method 2: ShipOrder
@@ -552,7 +553,7 @@ func (c *ShopShippingServiceClient) Request(ctx context.Context, req Input) (str
 			Items:   []*pb.CartItem{&defCartItem1, &defCartItem2},
 		}
 		var fw_res *pb.ShipOrderResponse
-		fw_res, err = c.client.ShipOrder(ctx, &fw_req)
+		fw_res, err = c.client.ShipOrder(ctx, &fw_req, opts...)
 		msg = fmt.Sprintf("req: {Address: %+v, Items: %+v} resp: %+v", &defAddress, []*pb.CartItem{&defCartItem1, &defCartItem2}, fw_res)
 
 	default:

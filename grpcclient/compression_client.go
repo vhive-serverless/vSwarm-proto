@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/compression"
+	"google.golang.org/grpc"
 )
 
 type FileCompressGenerator struct {
@@ -33,8 +34,8 @@ func (c *FileCompressClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *FileCompressClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.CompressFile(ctx, &pb.SendFile{Name: req.Value})
+func (c *FileCompressClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
+	r, err := c.client.CompressFile(ctx, &pb.SendFile{Name: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

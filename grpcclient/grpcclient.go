@@ -3,11 +3,13 @@ package grpcclient
 import (
 	"context"
 	"fmt"
+	"time"
 
 	tracing "github.com/vhive-serverless/vSwarm/utils/tracing/go"
 
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
@@ -92,7 +94,7 @@ func (s *GeneratorBase) Decrement() int {
 // Every client must implement this interface
 type GrpcClient interface {
 	Init(ctx context.Context, ip, port string) error
-	Request(ctx context.Context, req Input) (string, error)
+	Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error)
 	Close()
 	GetGenerator() Generator
 }
@@ -113,10 +115,10 @@ func (c *ClientBase) Connect(ctx context.Context, ip, port string) error {
 	var conn *grpc.ClientConn
 	var err error
 	if tracing.IsTracingEnabled() {
-		log.Debug("Tracing is enabled.")
+		log.Trace("Tracing is enabled.")
 		conn, err = tracing.DialGRPCWithUnaryInterceptor(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	} else {
-		log.Debug("Tracing is disabled.")
+		log.Trace("Tracing is disabled.")
 		conn, err = grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 	if err != nil {
@@ -127,6 +129,21 @@ func (c *ClientBase) Connect(ctx context.Context, ip, port string) error {
 			})
 		return err
 	}
+
+	conn.Connect()
+	timeoutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	for {
+		state := conn.GetState()
+		if state == connectivity.Ready {
+			break // Connection is established
+		}
+		// Wait for the state to transition
+		if !conn.WaitForStateChange(timeoutCtx, state) {
+			return fmt.Errorf("timeout waiting for gRPC connection to become ready")
+		}
+	}
+
 	c.conn = conn
 	return nil
 }

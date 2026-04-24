@@ -6,6 +6,7 @@ import (
 	"math/rand"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/fibonacci"
+	"google.golang.org/grpc"
 )
 
 type FibonacciGenerator struct {
@@ -21,11 +22,11 @@ func (g *FibonacciGenerator) Next() Input {
 		pkt.Value = fmt.Sprintf("%d", g.Increment())
 
 	case Random:
-		var fibNum int 
+		var fibNum int
 		if g.lowerBound == g.upperBound {
 			fibNum = g.lowerBound
 		} else {
-			fibNum = rand.Intn(g.upperBound - g.lowerBound) + g.lowerBound
+			fibNum = rand.Intn(g.upperBound-g.lowerBound) + g.lowerBound
 		}
 		pkt.Value = fmt.Sprintf("%d", fibNum)
 	}
@@ -50,9 +51,9 @@ func (c *FibonacciClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *FibonacciClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *FibonacciClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	var fibonacciMessage = req.Value
-	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: fibonacciMessage})
+	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: fibonacciMessage}, opts...)
 	if err != nil {
 		return "", err
 	}

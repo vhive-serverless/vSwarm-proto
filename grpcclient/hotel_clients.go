@@ -14,6 +14,7 @@ import (
 	reservation "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/reservation"
 	search "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/search"
 	user "github.com/vhive-serverless/vSwarm-proto/proto/hotel_reserv/user"
+	"google.golang.org/grpc"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -34,7 +35,7 @@ func (c *HotelGeoClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *HotelGeoClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelGeoClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	// Create a default forward request
 	coordinates := strings.Split(req.Value, ",")
 
@@ -46,7 +47,7 @@ func (c *HotelGeoClient) Request(ctx context.Context, req Input) (string, error)
 		Lat: float32(lat),
 	}
 
-	fw_res, err := c.client.Nearby(ctx, &fw_req)
+	fw_res, err := c.client.Nearby(ctx, &fw_req, opts...)
 	if err != nil {
 		return "Fail to invoke Geo service", err
 	}
@@ -99,7 +100,7 @@ func (c *HotelProfileClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *HotelProfileClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelProfileClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	payload := req.Value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -108,7 +109,7 @@ func (c *HotelProfileClient) Request(ctx context.Context, req Input) (string, er
 		Locale:   "",
 	}
 
-	fw_res, err := c.client.GetProfiles(ctx, &fw_req)
+	fw_res, err := c.client.GetProfiles(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -166,7 +167,7 @@ func (c *HotelRateClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *HotelRateClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelRateClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	payload := req.Value
 	ids := strings.Split(payload, ",")
 	// Create a forward request
@@ -175,7 +176,7 @@ func (c *HotelRateClient) Request(ctx context.Context, req Input) (string, error
 		InDate:   "2015-04-09",
 		OutDate:  "2015-04-11",
 	}
-	fw_res, err := c.client.GetRates(ctx, &fw_req)
+	fw_res, err := c.client.GetRates(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -224,7 +225,7 @@ func (c *HotelRecommendationClient) Init(ctx context.Context, ip, port string) e
 	return nil
 }
 
-func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelRecommendationClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	// Create a default forward request
 	coordinates := strings.Split(req.Value, ",")
@@ -245,7 +246,7 @@ func (c *HotelRecommendationClient) Request(ctx context.Context, req Input) (str
 		fw_req.Require = req.Value
 	}
 
-	fw_res, err := c.client.GetRecommendations(ctx, &fw_req)
+	fw_res, err := c.client.GetRecommendations(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -292,7 +293,7 @@ func (c *HotelReservationClient) Init(ctx context.Context, ip, port string) erro
 	return nil
 }
 
-func (c *HotelReservationClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelReservationClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	fw_method := req.Method
 	payload := strings.Split(req.Value, ",")
 	// Create a default forward request
@@ -311,11 +312,11 @@ func (c *HotelReservationClient) Request(ctx context.Context, req Input) (string
 	switch fw_method {
 	case "CheckAvailability", "0":
 		// fw_req.HotelId[0] = "2"
-		fw_res, err = c.client.CheckAvailability(ctx, &fw_req)
+		fw_res, err = c.client.CheckAvailability(ctx, &fw_req, opts...)
 
 	case "MakeReservation", "1":
 		fw_req.HotelId[0] = "3"
-		fw_res, err = c.client.MakeReservation(ctx, &fw_req)
+		fw_res, err = c.client.MakeReservation(ctx, &fw_req, opts...)
 
 	default:
 		log.Fatalf("Failed to understand requested method: %s", fw_method)
@@ -373,7 +374,7 @@ func (c *HotelUserClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *HotelUserClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelUserClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	payload := strings.Split(req.Value, ",")
 
 	// Create a forward request
@@ -382,7 +383,7 @@ func (c *HotelUserClient) Request(ctx context.Context, req Input) (string, error
 		Password: payload[1],
 	}
 
-	fw_res, err := c.client.CheckUser(ctx, &fw_req)
+	fw_res, err := c.client.CheckUser(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}
@@ -436,7 +437,7 @@ func (c *HotelSearchClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *HotelSearchClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *HotelSearchClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	// Create a forward request
 	fw_req := search.NearbyRequest{
 		Lat:     37.7963,
@@ -445,7 +446,7 @@ func (c *HotelSearchClient) Request(ctx context.Context, req Input) (string, err
 		OutDate: "2015-04-11",
 	}
 
-	fw_res, err := c.client.Nearby(ctx, &fw_req)
+	fw_res, err := c.client.Nearby(ctx, &fw_req, opts...)
 	if err != nil {
 		return "", err
 	}

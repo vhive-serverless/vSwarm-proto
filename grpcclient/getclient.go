@@ -37,95 +37,95 @@ func FindServiceName(functionName string) string {
 func FindGrpcClient(service_name string) GrpcClient {
 	switch service_name {
 	case "helloworld":
-		log.Debug("Found Helloworld client")
+		log.Trace("Found Helloworld client")
 		return new(HelloWorldClient)
 
 	case "aes":
-		log.Debug("Found AES client")
+		log.Trace("Found AES client")
 		return new(AesClient)
 	case "auth":
-		log.Debug("Found Auth client")
+		log.Trace("Found Auth client")
 		return new(AuthClient)
 	case "fibonacci":
-		log.Debug("Found Fibonacci client")
+		log.Trace("Found Fibonacci client")
 		return new(FibonacciClient)
 	case "compression":
-		log.Debug("Found Compression client")
+		log.Trace("Found Compression client")
 		return new(FileCompressClient)
 	case "graph-bfs":
-		log.Debug("Found Graph BFS client")
+		log.Trace("Found Graph BFS client")
 		return new(GraphBFSClient)
 	case "gptj":
-		log.Debug("Found gptj client")
+		log.Trace("Found gptj client")
 		return new(GptJClient)
 	case "image-rotate":
-		log.Debug("Found image rotate client")
+		log.Trace("Found image rotate client")
 		return new(ImageRotateClient)
 	case "video-processing":
-		log.Debug("Found video processing client")
+		log.Trace("Found video processing client")
 		return new(VideoProcessingClient)
 	case "rnn-serving":
-		log.Debug("Found rnn serving client")
+		log.Trace("Found rnn serving client")
 		return new(RNNServingClient)
 	case "video-analytics-standalone":
-		log.Debug("Found video analytics standalone client")
+		log.Trace("Found video analytics standalone client")
 		return new(VideoAnalyticsClient)
 
 		// Hotel reservation ---
 	case "Geo", "geo":
-		log.Debug("Found geo client")
+		log.Trace("Found geo client")
 		return new(HotelGeoClient)
 	case "Profile", "profile":
-		log.Debug("Found profile client")
+		log.Trace("Found profile client")
 		return new(HotelProfileClient)
 	case "Rate", "rate":
-		log.Debug("Found rate client")
+		log.Trace("Found rate client")
 		return new(HotelRateClient)
 	case "Recommendation", "recommendation":
-		log.Debug("Found recommendation client")
+		log.Trace("Found recommendation client")
 		return new(HotelRecommendationClient)
 	case "Reservation", "reservation":
-		log.Debug("Found reservation client")
+		log.Trace("Found reservation client")
 		return new(HotelReservationClient)
 	case "User", "user":
-		log.Debug("Found user client")
+		log.Trace("Found user client")
 		return new(HotelUserClient)
 	case "Search", "search":
-		log.Debug("Found search client")
+		log.Trace("Found search client")
 		return new(HotelSearchClient)
 
 	// Hipster shop ---
 	case "Ad", "adservice":
-		log.Debug("Found Ad client for online shop")
+		log.Trace("Found Ad client for online shop")
 		return new(ShopAdServiceClient)
 	case "Cart", "cartservice":
-		log.Debug("Found Cart client for online shop")
+		log.Trace("Found Cart client for online shop")
 		return new(ShopCartServiceClient)
 	case "Checkout", "checkoutservice":
-		log.Debug("Found Checkout client for online shop")
+		log.Trace("Found Checkout client for online shop")
 		return new(ShopCheckoutServiceClient)
 	case "Currency", "currencyservice":
-		log.Debug("Found Currency client for online shop")
+		log.Trace("Found Currency client for online shop")
 		return new(ShopCurrencyServiceClient)
 	case "Email", "emailservice":
-		log.Debug("Found Email client for online shop")
+		log.Trace("Found Email client for online shop")
 		return new(ShopEmailServiceClient)
 	case "Payment", "paymentservice":
-		log.Debug("Found Payment client for online shop")
+		log.Trace("Found Payment client for online shop")
 		return new(ShopPaymentServiceClient)
 	case "ProductCatalog", "productcatalogservice":
-		log.Debug("Found ProductCatalog client for online shop")
+		log.Trace("Found ProductCatalog client for online shop")
 		return new(ShopProductCatalogServiceClient)
 	case "recommendationservice":
-		log.Debug("Found Recommendation client for online shop")
+		log.Trace("Found Recommendation client for online shop")
 		return new(ShopRecommendationServiceClient)
 	case "Shipping", "shippingservice":
-		log.Debug("Found Shipping client for online shop")
+		log.Trace("Found Shipping client for online shop")
 		return new(ShopShippingServiceClient)
 
 	// Spright parking ---
 	case "spright-parking":
-		log.Debug("Found Spright client for spright parking")
+		log.Trace("Found Spright client for spright parking")
 		return new(ParkingClient)
 
 	// Default ---------

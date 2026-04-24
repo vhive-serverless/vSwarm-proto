@@ -2,8 +2,10 @@ package grpcclient
 
 import (
 	"context"
+
 	log "github.com/sirupsen/logrus"
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/gptj"
+	"google.golang.org/grpc"
 )
 
 type GptJGenerator struct {
@@ -42,8 +44,8 @@ func (c *GptJClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *GptJClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.GetBenchmark(ctx, &pb.GptJBenchmarkRequest{Regenerate: req.Value})
+func (c *GptJClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
+	r, err := c.client.GetBenchmark(ctx, &pb.GptJBenchmarkRequest{Regenerate: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/aes"
+	"google.golang.org/grpc"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -62,8 +63,8 @@ func (c *AesClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *AesClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.ShowEncryption(ctx, &pb.PlainTextMessage{PlaintextMessage: req.Value})
+func (c *AesClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
+	r, err := c.client.ShowEncryption(ctx, &pb.PlainTextMessage{PlaintextMessage: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/parking"
+	"google.golang.org/grpc"
 )
 
 type ParkingGenerator struct {
@@ -45,9 +46,9 @@ func (c *ParkingClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *ParkingClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *ParkingClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
-	r, err := c.client.DoParking(ctx, &pb.ParkingRequest{Name: req.Value})
+	r, err := c.client.DoParking(ctx, &pb.ParkingRequest{Name: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

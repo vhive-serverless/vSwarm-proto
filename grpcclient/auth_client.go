@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/auth"
+	"google.golang.org/grpc"
 )
 
 var inputs = []string{"allow", "deny", "unauthorized", "bla bla"}
@@ -46,9 +47,9 @@ func (c *AuthClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *AuthClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *AuthClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	var authMessage = req.Value
-	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: authMessage})
+	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: authMessage}, opts...)
 	if err != nil {
 		return "", err
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/helloworld"
+	"google.golang.org/grpc"
 )
 
 // type HelloWorldGenerator struct {
@@ -66,8 +67,8 @@ func (c *HelloWorldClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *HelloWorldClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: req.Value})
+func (c *HelloWorldClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
+	r, err := c.client.SayHello(ctx, &pb.HelloRequest{Name: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

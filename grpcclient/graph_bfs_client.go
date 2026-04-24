@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/graph_bfs"
+	"google.golang.org/grpc"
 )
 
 type GraphBFSGenerator struct {
@@ -33,9 +34,9 @@ func (c *GraphBFSClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *GraphBFSClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *GraphBFSClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 	var graphBFSMessage = req.Value
-	r, err := c.client.GetBfs(ctx, &pb.GraphBFSBenchmarkRequest{Name: graphBFSMessage})
+	r, err := c.client.GetBfs(ctx, &pb.GraphBFSBenchmarkRequest{Name: graphBFSMessage}, opts...)
 	if err != nil {
 		return "", err
 	}

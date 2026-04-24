@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/video_processing"
+	"google.golang.org/grpc"
 )
 
 type VideoProcessingGenerator struct {
@@ -33,8 +34,8 @@ func (c *VideoProcessingClient) Init(ctx context.Context, ip, port string) error
 	return nil
 }
 
-func (c *VideoProcessingClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.ConvertToGrayscale(ctx, &pb.SendVideo{Name: req.Value})
+func (c *VideoProcessingClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
+	r, err := c.client.ConvertToGrayscale(ctx, &pb.SendVideo{Name: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

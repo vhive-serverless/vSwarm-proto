@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/image_rotate"
+	"google.golang.org/grpc"
 )
 
 type ImageRotateGenerator struct {
@@ -33,8 +34,8 @@ func (c *ImageRotateClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *ImageRotateClient) Request(ctx context.Context, req Input) (string, error) {
-	r, err := c.client.RotateImage(ctx, &pb.SendImage{Name: req.Value})
+func (c *ImageRotateClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
+	r, err := c.client.RotateImage(ctx, &pb.SendImage{Name: req.Value}, opts...)
 	if err != nil {
 		return "", err
 	}

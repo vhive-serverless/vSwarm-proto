@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	pb "github.com/vhive-serverless/vSwarm-proto/proto/rnn_serving"
+	"google.golang.org/grpc"
 )
 
 type RNNServingGenerator struct {
@@ -28,7 +29,7 @@ func (g *RNNServingGenerator) Next() Input {
 		country := "English"
 		numSamples := 1
 		pkt.Value = country + " " + strconv.Itoa(numSamples)
-	
+
 	case Random:
 		randomCountry := countries[rand.Intn(len(countries))]
 		var numSamples int
@@ -60,13 +61,13 @@ func (c *RNNServingClient) Init(ctx context.Context, ip, port string) error {
 	return nil
 }
 
-func (c *RNNServingClient) Request(ctx context.Context, req Input) (string, error) {
+func (c *RNNServingClient) Request(ctx context.Context, req Input, opts ...grpc.CallOption) (string, error) {
 
 	inputs = strings.Split(req.Value, " ")
 	language := inputs[0]
 	numSamples, _ := strconv.ParseInt(inputs[1], 10, 32)
 
-	r, err := c.client.GenerateString(ctx, &pb.SendLanguage{Language: string(language), NumSamples: int32(numSamples)})
+	r, err := c.client.GenerateString(ctx, &pb.SendLanguage{Language: string(language), NumSamples: int32(numSamples)}, opts...)
 	if err != nil {
 		return "", err
 	}
